@@ -1,0 +1,6 @@
+@import "tailwindcss";
+
+/* Fundo padrão do site em Off-white para evitar flashes brancos */
+body {
+  background-color: #F7F3EF; 
+}
