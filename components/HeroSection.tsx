@@ -1,41 +1,341 @@
-export default function HeroSection() {
-  return (
-    // Fundo bege super claro para o menu transparente sumir nele
-    <section className="relative w-full min-h-[90vh] bg-[#FAF8F5] flex items-center justify-center pt-24 overflow-hidden">
-      
-      <div className="max-w-[90rem] mx-auto w-full px-8 flex flex-col md:flex-row items-center justify-between gap-12">
-        
-        {/* Lado Esquerdo - Espaço para a Joia (Igual a Borboleta) */}
-        <div className="w-full md:w-1/2 flex justify-center relative">
-           {/* Uma caixa de vidro temporária simulando a foto de uma joia */}
-           <div className="w-[300px] h-[400px] md:w-[450px] md:h-[550px] rounded-[100px] bg-white shadow-xl flex items-center justify-center border border-[#D4AF37]/20 overflow-hidden relative">
-              <span className="text-gray-400 font-serif italic absolute z-10">Imagem da Joia Aqui</span>
-              <div className="absolute inset-0 bg-gradient-to-tr from-[#F7F3EF] to-white"></div>
-           </div>
-        </div>
+'use client';
 
-        {/* Lado Direito - Textos Elegantes */}
-        <div className="w-full md:w-1/2 flex flex-col items-center md:items-start text-center md:text-left z-10">
-          
-          <h2 className="text-[#1A1A1A] text-4xl md:text-6xl font-serif mb-6 leading-tight">
-            A Arte do Leilão <br className="hidden md:block" /> e da Avaliação
-          </h2>
-          
-          <p className="text-gray-600 text-xs md:text-sm font-light tracking-[0.15em] uppercase mb-12 max-w-lg leading-relaxed">
-            Transforme suas joias e ouro em capital com a segurança e discrição do Vogue Square.
+import { useState } from 'react';
+
+export default function HeroSection() {
+  const [videoReady, setVideoReady] = useState(false);
+
+  return (
+    <section
+      id="hero"
+      aria-labelledby="hero-title"
+      className="
+        relative
+        min-h-[84svh]
+        w-full
+        overflow-hidden
+        bg-[#F4D9D9]
+        md:min-h-[100svh]
+      "
+    >
+      {/* =====================================================
+          POSTER RESPONSIVO
+      ====================================================== */}
+
+      <picture
+        aria-hidden="true"
+        className="
+          absolute
+          inset-0
+          z-0
+          block
+          h-full
+          w-full
+        "
+      >
+        <source
+          media="(max-width: 767px)"
+          srcSet="/hero/hero-poster-mobile.webp"
+        />
+
+        <img
+          src="/hero/hero-poster-desktop.webp"
+          alt=""
+          width={1920}
+          height={960}
+          fetchPriority="high"
+          decoding="async"
+          className="
+            h-full
+            w-full
+            object-cover
+          "
+        />
+      </picture>
+
+      {/* =====================================================
+          VÍDEO RESPONSIVO
+      ====================================================== */}
+
+      <video
+        autoPlay
+        muted
+        loop
+        playsInline
+        preload="metadata"
+        aria-hidden="true"
+        onCanPlay={() => setVideoReady(true)}
+        className={`
+          absolute
+          inset-0
+          z-[1]
+          h-full
+          w-full
+          object-cover
+
+          transition-opacity
+          duration-700
+          ease-out
+
+          ${
+            videoReady
+              ? 'opacity-100'
+              : 'opacity-0'
+          }
+        `}
+      >
+        <source
+          media="(max-width: 767px)"
+          src="/hero/hero-mobile.mp4"
+          type="video/mp4"
+        />
+
+        <source
+          src="/hero/hero-desktop.mp4"
+          type="video/mp4"
+        />
+      </video>
+
+      {/* =====================================================
+          OVERLAY DE LEITURA
+      ====================================================== */}
+
+      <div
+        aria-hidden="true"
+        className="
+          pointer-events-none
+          absolute
+          inset-0
+          z-[2]
+
+          bg-gradient-to-r
+          from-[#F7E3E2]/80
+          via-[#F7E3E2]/22
+          to-transparent
+
+          md:from-[#F8E7E4]/72
+          md:via-[#F8E7E4]/18
+        "
+      />
+
+      {/* =====================================================
+          CONTEÚDO
+      ====================================================== */}
+
+      <div
+        className="
+          relative
+          z-10
+
+          mx-auto
+          flex
+          min-h-[84svh]
+          w-full
+          max-w-[90rem]
+
+          items-start
+          px-6
+          pb-14
+          pt-36
+
+          md:min-h-[100svh]
+          md:items-center
+          md:px-8
+          md:pb-0
+          md:pt-24
+        "
+      >
+        <div
+          className="
+            w-full
+            max-w-[540px]
+
+            text-center
+            md:text-left
+          "
+        >
+          <p
+            className="
+              mb-5
+              text-[9px]
+              font-semibold
+              uppercase
+              tracking-[0.32em]
+              text-[#7B4F56]
+              md:text-[10px]
+            "
+          >
+            Madiha Maison • Rio de Janeiro
           </p>
 
-          <div className="flex flex-col sm:flex-row gap-6">
-            <button className="border-none outline-none px-6 py-3 border-b border-[#1A1A1A] text-[#1A1A1A] text-xs uppercase tracking-widest hover:text-[#D4AF37] hover:border-[#D4AF37] transition-all cursor-pointer">
+          <h1
+            id="hero-title"
+            className="
+              font-serif
+              text-[2.65rem]
+              font-normal
+              leading-[1.04]
+              text-[#4F1720]
+              sm:text-5xl
+              md:text-6xl
+              lg:text-[4.6rem]
+            "
+          >
+            A Arte do Leilão
+            <br />
+            e da Avaliação
+          </h1>
+
+          <p
+            className="
+              mx-auto
+              mt-7
+              max-w-[460px]
+              text-[11px]
+              font-light
+              uppercase
+              leading-6
+              tracking-[0.14em]
+              text-[#654F51]
+              md:mx-0
+              md:text-xs
+              md:leading-7
+            "
+          >
+            Transforme suas joias e ouro em capital
+            com segurança, discrição e atendimento
+            especializado no Vogue Square.
+          </p>
+
+          <div
+            className="
+              mt-10
+              flex
+              flex-col
+              items-center
+              justify-center
+              gap-5
+              sm:flex-row
+              md:justify-start
+            "
+          >
+            <a
+              href="#leilao"
+              className="
+                group
+                relative
+                px-1
+                pb-3
+                text-[10px]
+                font-semibold
+                uppercase
+                tracking-[0.22em]
+                text-[#4F1720]
+                transition-colors
+                duration-300
+                hover:text-[#8C692E]
+              "
+            >
               Ver Leilão Atual
-            </button>
-            
-            <button className="border-none outline-none px-6 py-3 border-b border-transparent text-gray-500 text-xs uppercase tracking-widest hover:text-[#D4AF37] transition-all cursor-pointer">
+
+              <span
+                aria-hidden="true"
+                className="
+                  absolute
+                  bottom-0
+                  left-0
+                  h-px
+                  w-full
+                  origin-left
+                  bg-[#4F1720]
+                  transition-transform
+                  duration-500
+                  ease-out
+                  group-hover:scale-x-75
+                  group-hover:bg-[#8C692E]
+                "
+              />
+            </a>
+
+            <a
+              href="#calculadora-de-ouro"
+              className="
+                group
+                relative
+                px-1
+                pb-3
+                text-[10px]
+                font-semibold
+                uppercase
+                tracking-[0.22em]
+                text-[#755F61]
+                transition-colors
+                duration-300
+                hover:text-[#8C692E]
+              "
+            >
               Avaliar Minha Joia
-            </button>
+
+              <span
+                aria-hidden="true"
+                className="
+                  absolute
+                  bottom-0
+                  left-0
+                  h-px
+                  w-0
+                  bg-[#8C692E]
+                  transition-all
+                  duration-500
+                  ease-out
+                  group-hover:w-full
+                "
+              />
+            </a>
           </div>
         </div>
+      </div>
 
+      {/* =====================================================
+          INDICADOR INFERIOR
+      ====================================================== */}
+
+      <div
+        aria-hidden="true"
+        className="
+          absolute
+          bottom-7
+          left-1/2
+          z-10
+          hidden
+          -translate-x-1/2
+          flex-col
+          items-center
+          gap-2
+          md:flex
+        "
+      >
+        <span
+          className="
+            text-[8px]
+            font-medium
+            uppercase
+            tracking-[0.25em]
+            text-[#715B5D]/70
+          "
+        >
+          Descubra
+        </span>
+
+        <span
+          className="
+            h-10
+            w-px
+            bg-gradient-to-b
+            from-[#715B5D]/50
+            to-transparent
+          "
+        />
       </div>
     </section>
   );
