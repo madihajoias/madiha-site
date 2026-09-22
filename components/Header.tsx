@@ -1,98 +1,237 @@
 'use client';
 
-import { Heart, MapPin, Menu, Phone, Search } from 'lucide-react';
+import {
+  Heart,
+  MapPin,
+  Menu,
+  Phone,
+  Search,
+} from 'lucide-react';
+
 import Link from 'next/link';
-import { useEffect, useRef, useState } from 'react';
+
+import {
+  usePathname,
+} from 'next/navigation';
+
+import {
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
 
 import Butterfly from './Butterfly';
+
 import DesktopMenu from './navigation/DesktopMenu';
+
 import MobileMenu from './navigation/MobileMenu';
 
 export default function Header() {
-  const [isScrolled, setIsScrolled] = useState(false);
-  const [mounted, setMounted] = useState(false);
-  const [menuOpen, setMenuOpen] = useState(false);
+  const pathname =
+    usePathname();
 
-  const [desktopSectionId, setDesktopSectionId] =
-    useState<string | null>(null);
+  const [
+    isScrolled,
+    setIsScrolled,
+  ] =
+    useState(false);
 
-  const [mobileSectionId, setMobileSectionId] =
-    useState<string | null>(null);
+  const [
+    mounted,
+    setMounted,
+  ] =
+    useState(false);
 
-  const logoRef = useRef<HTMLDivElement>(null);
+  const [
+    menuOpen,
+    setMenuOpen,
+  ] =
+    useState(false);
+
+  const [
+    desktopSectionId,
+    setDesktopSectionId,
+  ] =
+    useState<
+      string | null
+    >(null);
+
+  const [
+    mobileSectionId,
+    setMobileSectionId,
+  ] =
+    useState<
+      string | null
+    >(null);
+
+  const logoRef =
+    useRef<HTMLDivElement>(
+      null
+    );
+
+  /*
+   * =====================================================
+   * PÁGINAS QUE PRECISAM DO HEADER SEMPRE CLARO
+   * =====================================================
+   */
+
+  const forceLightHeader =
+    pathname?.startsWith(
+      '/joias/calculadora-de-joias'
+    ) ?? false;
+
+  const showLightHeader =
+    forceLightHeader ||
+    isScrolled ||
+    menuOpen;
+
+  /*
+   * =====================================================
+   * SCROLL
+   * =====================================================
+   */
 
   useEffect(() => {
     setMounted(true);
 
-    let ticking = false;
+    let ticking =
+      false;
 
-    const updateHeader = () => {
-      const nextScrolled = window.scrollY > 32;
+    const updateHeader =
+      () => {
+        const nextScrolled =
+          window.scrollY >
+          32;
 
-      setIsScrolled((current) =>
-        current === nextScrolled ? current : nextScrolled
-      );
+        setIsScrolled(
+          (
+            current
+          ) =>
+            current ===
+            nextScrolled
+              ? current
+              : nextScrolled
+        );
 
-      ticking = false;
-    };
+        ticking =
+          false;
+      };
 
-    const handleScroll = () => {
-      if (ticking) return;
+    const handleScroll =
+      () => {
+        if (ticking) {
+          return;
+        }
 
-      window.requestAnimationFrame(updateHeader);
-      ticking = true;
-    };
+        window.requestAnimationFrame(
+          updateHeader
+        );
+
+        ticking =
+          true;
+      };
 
     updateHeader();
 
-    window.addEventListener('scroll', handleScroll, {
-      passive: true,
-    });
+    window.addEventListener(
+      'scroll',
+      handleScroll,
+      {
+        passive: true,
+      }
+    );
 
     return () => {
-      window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener(
+        'scroll',
+        handleScroll
+      );
     };
   }, []);
 
+  /*
+   * =====================================================
+   * MENU
+   * =====================================================
+   */
+
   useEffect(() => {
-    if (!menuOpen) return;
+    if (!menuOpen) {
+      return;
+    }
 
-    const previousOverflow = document.body.style.overflow;
+    const previousOverflow =
+      document.body.style
+        .overflow;
 
-    document.body.style.overflow = 'hidden';
+    document.body.style.overflow =
+      'hidden';
 
-    const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') {
-        closeMenu();
-      }
-    };
+    const handleKeyDown =
+      (
+        event:
+          KeyboardEvent
+      ) => {
+        if (
+          event.key ===
+          'Escape'
+        ) {
+          closeMenu();
+        }
+      };
 
-    window.addEventListener('keydown', handleKeyDown);
+    window.addEventListener(
+      'keydown',
+      handleKeyDown
+    );
 
     return () => {
-      document.body.style.overflow = previousOverflow;
+      document.body.style.overflow =
+        previousOverflow;
 
       window.removeEventListener(
         'keydown',
         handleKeyDown
       );
     };
-  }, [menuOpen]);
+  }, [
+    menuOpen,
+  ]);
 
-  const openMenu = () => {
-    setDesktopSectionId(null);
-    setMobileSectionId(null);
-    setMenuOpen(true);
-  };
+  const openMenu =
+    () => {
+      setDesktopSectionId(
+        null
+      );
 
-  const closeMenu = () => {
-    setMenuOpen(false);
+      setMobileSectionId(
+        null
+      );
 
-    window.setTimeout(() => {
-      setDesktopSectionId(null);
-      setMobileSectionId(null);
-    }, 450);
-  };
+      setMenuOpen(
+        true
+      );
+    };
+
+  const closeMenu =
+    () => {
+      setMenuOpen(
+        false
+      );
+
+      window.setTimeout(
+        () => {
+          setDesktopSectionId(
+            null
+          );
+
+          setMobileSectionId(
+            null
+          );
+        },
+        450
+      );
+    };
 
   return (
     <>
@@ -112,19 +251,19 @@ export default function Header() {
           ease-out
 
           ${
-            isScrolled || menuOpen
+            showLightHeader
               ? `
-                border-[#6D4C42]/10
-                bg-[#F7F3EF]/92
-                shadow-[0_8px_30px_rgba(55,35,25,0.06)]
-                backdrop-blur-xl
-              `
+                  border-[#6D4C42]/10
+                  bg-[#F7F3EF]/95
+                  shadow-[0_8px_30px_rgba(55,35,25,0.06)]
+                  backdrop-blur-xl
+                `
               : `
-                border-transparent
-                bg-transparent
-                shadow-none
-                backdrop-blur-0
-              `
+                  border-transparent
+                  bg-transparent
+                  shadow-none
+                  backdrop-blur-0
+                `
           }
         `}
       >
@@ -147,7 +286,11 @@ export default function Header() {
             md:py-8
           "
         >
-          {/* ESQUERDA */}
+          {/*
+           * ==========================================
+           * ESQUERDA
+           * ==========================================
+           */}
 
           <div
             className="
@@ -160,9 +303,13 @@ export default function Header() {
           >
             <button
               type="button"
-              onClick={openMenu}
+              onClick={
+                openMenu
+              }
               aria-label="Abrir menu"
-              aria-expanded={menuOpen}
+              aria-expanded={
+                menuOpen
+              }
               aria-controls="madiha-main-navigation"
               className="
                 cursor-pointer
@@ -180,8 +327,12 @@ export default function Header() {
               "
             >
               <Menu
-                strokeWidth={1}
-                size={24}
+                strokeWidth={
+                  1
+                }
+                size={
+                  24
+                }
               />
             </button>
 
@@ -209,8 +360,12 @@ export default function Header() {
               "
             >
               <Search
-                strokeWidth={1}
-                size={18}
+                strokeWidth={
+                  1
+                }
+                size={
+                  18
+                }
               />
 
               <span
@@ -227,7 +382,11 @@ export default function Header() {
             </button>
           </div>
 
-          {/* CENTRO */}
+          {/*
+           * ==========================================
+           * CENTRO
+           * ==========================================
+           */}
 
           <div
             className="
@@ -239,7 +398,9 @@ export default function Header() {
             "
           >
             <div
-              ref={logoRef}
+              ref={
+                logoRef
+              }
               className="
                 relative
                 inline-block
@@ -265,7 +426,7 @@ export default function Header() {
                   md:text-[28px]
 
                   ${
-                    isScrolled || menuOpen
+                    showLightHeader
                       ? 'text-[#580F1A]'
                       : 'text-[#4F1720]'
                   }
@@ -273,13 +434,13 @@ export default function Header() {
                   ${
                     mounted
                       ? `
-                        opacity-100
-                        tracking-[0.15em]
-                      `
+                          opacity-100
+                          tracking-[0.15em]
+                        `
                       : `
-                        opacity-0
-                        tracking-[0.05em]
-                      `
+                          opacity-0
+                          tracking-[0.05em]
+                        `
                   }
                 `}
               >
@@ -290,7 +451,11 @@ export default function Header() {
             </div>
           </div>
 
-          {/* DIREITA */}
+          {/*
+           * ==========================================
+           * DIREITA
+           * ==========================================
+           */}
 
           <div
             className="
@@ -354,8 +519,12 @@ export default function Header() {
               "
             >
               <MapPin
-                strokeWidth={1}
-                size={20}
+                strokeWidth={
+                  1
+                }
+                size={
+                  20
+                }
               />
             </button>
 
@@ -381,8 +550,12 @@ export default function Header() {
               "
             >
               <Phone
-                strokeWidth={1}
-                size={20}
+                strokeWidth={
+                  1
+                }
+                size={
+                  20
+                }
               />
             </button>
 
@@ -407,8 +580,12 @@ export default function Header() {
               "
             >
               <Heart
-                strokeWidth={1}
-                size={20}
+                strokeWidth={
+                  1
+                }
+                size={
+                  20
+                }
               />
 
               <span
@@ -441,17 +618,33 @@ export default function Header() {
 
       <div id="madiha-main-navigation">
         <DesktopMenu
-          open={menuOpen}
-          activeSectionId={desktopSectionId}
-          onClose={closeMenu}
-          onSectionChange={setDesktopSectionId}
+          open={
+            menuOpen
+          }
+          activeSectionId={
+            desktopSectionId
+          }
+          onClose={
+            closeMenu
+          }
+          onSectionChange={
+            setDesktopSectionId
+          }
         />
 
         <MobileMenu
-          open={menuOpen}
-          activeSectionId={mobileSectionId}
-          onClose={closeMenu}
-          onSectionChange={setMobileSectionId}
+          open={
+            menuOpen
+          }
+          activeSectionId={
+            mobileSectionId
+          }
+          onClose={
+            closeMenu
+          }
+          onSectionChange={
+            setMobileSectionId
+          }
         />
       </div>
     </>

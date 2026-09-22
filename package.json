@@ -6,7 +6,10 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "extract:diamonds": "node scripts/extract-diamond-prices-from-xlsx.mjs",
+    "import:diamonds": "node scripts/import-diamond-prices.mjs",
+    "sync:diamonds": "npm run extract:diamonds && npm run import:diamonds"
   },
   "dependencies": {
     "gsap": "^3.15.0",
@@ -23,6 +26,7 @@
     "eslint": "^9",
     "eslint-config-next": "16.3.2",
     "tailwindcss": "^4",
-    "typescript": "^5"
+    "typescript": "^5",
+    "xlsx": "^0.18.5"
   }
 }

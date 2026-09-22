@@ -14,14 +14,17 @@ const PURITY_FACTORS = {
 
 type GoldKarat = keyof typeof PURITY_FACTORS;
 
+type GoldPriceResponse = {
+  bolsa: Record<GoldKarat, number>;
+  comercial: Record<GoldKarat, number>;
+  usdBrl: number;
+  updatedAt: string;
+};
+
 let cache:
   | {
       expiresAt: number;
-      data: {
-        bolsa: Record<GoldKarat, number>;
-        comercial: Record<GoldKarat, number>;
-        updatedAt: string;
-      };
+      data: GoldPriceResponse;
     }
   | null = null;
 
@@ -34,6 +37,7 @@ export async function GET() {
     }
 
     const apiKey = process.env.METALPRICE_API_KEY;
+
     const adjustment = Number(
       process.env.GOLD_COMMERCIAL_ADJUSTMENT ?? '30'
     );
@@ -41,7 +45,8 @@ export async function GET() {
     if (!apiKey) {
       return NextResponse.json(
         {
-          error: 'A chave da API de cotação não foi configurada.',
+          error:
+            'A chave da API de cotação não foi configurada.',
         },
         {
           status: 500,
@@ -52,7 +57,8 @@ export async function GET() {
     if (!Number.isFinite(adjustment)) {
       return NextResponse.json(
         {
-          error: 'O ajuste comercial configurado é inválido.',
+          error:
+            'O ajuste comercial configurado é inválido.',
         },
         {
           status: 500,
@@ -70,6 +76,7 @@ export async function GET() {
 
     const response = await fetch(url.toString(), {
       method: 'GET',
+
       headers: {
         Accept: 'application/json',
       },
@@ -107,8 +114,13 @@ export async function GET() {
       );
     }
 
-    const xauRate = Number(data.rates.XAU);
-    const usdBrlRate = Number(data.rates.BRL);
+    const xauRate = Number(
+      data.rates.XAU
+    );
+
+    const usdBrlRate = Number(
+      data.rates.BRL
+    );
 
     if (
       !Number.isFinite(xauRate) ||
@@ -127,45 +139,75 @@ export async function GET() {
       );
     }
 
-    // Valor de 1 onça troy de ouro em USD.
-    const ounceGoldUsd = 1 / xauRate;
+    const ounceGoldUsd =
+      1 / xauRate;
 
-    // Valor do grama de ouro puro 24k em BRL.
     const marketPrice24k =
-      (ounceGoldUsd / OUNCE_IN_GRAMS) * usdBrlRate;
+      (ounceGoldUsd / OUNCE_IN_GRAMS) *
+      usdBrlRate;
 
-    // Valor comercial após o ajuste configurado.
     const commercialPrice24k =
-      marketPrice24k * (1 - adjustment / 100);
+      marketPrice24k *
+      (1 - adjustment / 100);
 
-    const bolsa = {} as Record<GoldKarat, number>;
-    const comercial = {} as Record<GoldKarat, number>;
+    const bolsa =
+      {} as Record<
+        GoldKarat,
+        number
+      >;
+
+    const comercial =
+      {} as Record<
+        GoldKarat,
+        number
+      >;
 
     (
-      Object.entries(PURITY_FACTORS) as [
+      Object.entries(
+        PURITY_FACTORS
+      ) as [
         GoldKarat,
         number,
       ][]
-    ).forEach(([karat, purity]) => {
-      bolsa[karat] = marketPrice24k * purity;
-      comercial[karat] =
-        commercialPrice24k * purity;
-    });
+    ).forEach(
+      ([karat, purity]) => {
+        bolsa[karat] =
+          marketPrice24k *
+          purity;
 
-    const result = {
+        comercial[karat] =
+          commercialPrice24k *
+          purity;
+      }
+    );
+
+    const result: GoldPriceResponse = {
       bolsa,
       comercial,
-      updatedAt: new Date().toISOString(),
+
+      // dólar do dia
+      usdBrl: usdBrlRate,
+
+      updatedAt:
+        new Date().toISOString(),
     };
 
     cache = {
       data: result,
-      expiresAt: now + 5 * 60 * 1000,
+
+      expiresAt:
+        now +
+        5 * 60 * 1000,
     };
 
-    return NextResponse.json(result);
+    return NextResponse.json(
+      result
+    );
   } catch (error) {
-    console.error('Erro na API de cotação:', error);
+    console.error(
+      'Erro na API de cotação:',
+      error
+    );
 
     return NextResponse.json(
       {
