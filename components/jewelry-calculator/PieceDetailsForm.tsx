@@ -27,7 +27,10 @@ type Props = {
     (value: PieceType) => void;
 
   onGoldColorChange:
-    (value: GoldColor) => void;
+    (
+      value: GoldColor,
+      isWhiteGold: boolean
+    ) => void;
 
   onConservationChange:
     (
@@ -199,12 +202,33 @@ export default function PieceDetailsForm({
               }
               onChange={(
                 event
-              ) =>
+              ) => {
+                const selectedLabel =
+                  event.target
+                    .selectedOptions[0]
+                    ?.textContent ??
+                  '';
+
+                const normalizedLabel =
+                  selectedLabel
+                    .normalize('NFD')
+                    .replace(
+                      /[\u0300-\u036f]/g,
+                      ''
+                    )
+                    .toLowerCase();
+
                 onGoldColorChange(
                   event.target
-                    .value as GoldColor
-                )
-              }
+                    .value as GoldColor,
+                  normalizedLabel.includes(
+                    'branco'
+                  ) ||
+                    normalizedLabel.includes(
+                      'white'
+                    )
+                );
+              }}
               className={
                 selectClass
               }

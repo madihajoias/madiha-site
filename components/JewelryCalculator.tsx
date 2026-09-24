@@ -106,6 +106,12 @@ export default function JewelryCalculator() {
     );
 
   const [
+    isWhiteGold,
+    setIsWhiteGold,
+  ] =
+    useState(false);
+
+  const [
     conservation,
     setConservation,
   ] =
@@ -277,6 +283,34 @@ export default function JewelryCalculator() {
     isPremiumLuxuryBrand(
       luxuryBrand
     );
+
+  const handleGoldColorChange =
+    (
+      value: GoldColor,
+      whiteGoldSelected: boolean
+    ) => {
+      setGoldColor(
+        value
+      );
+
+      setIsWhiteGold(
+        whiteGoldSelected
+      );
+
+      if (
+        whiteGoldSelected &&
+        (
+          karat ===
+            '24k' ||
+          karat ===
+            '22k'
+        )
+      ) {
+        setKarat(
+          '18k'
+        );
+      }
+    };
 
   /*
    * =====================================================
@@ -694,10 +728,16 @@ export default function JewelryCalculator() {
         '24k'
       ] ?? 0;
 
-  const goldPricePerGram =
+  const baseGoldPricePerGram =
     luxuryPremiumEligible
       ? premiumGoldPricePerGram
       : standardGoldPricePerGram;
+
+  const goldPricePerGram =
+    isWhiteGold
+      ? baseGoldPricePerGram *
+        0.5
+      : baseGoldPricePerGram;
 
   const goldValue =
     goldWeightNumber >
@@ -1096,7 +1136,7 @@ export default function JewelryCalculator() {
     setPieceType
   }
   onGoldColorChange={
-    setGoldColor
+    handleGoldColorChange
   }
   onConservationChange={
     setConservation
@@ -1135,6 +1175,9 @@ export default function JewelryCalculator() {
                 <GoldJewelryForm
   premium={
     isPremiumTheme
+  }
+  isWhiteGold={
+    isWhiteGold
   }
   goldWeight={
     goldWeight
@@ -1241,6 +1284,9 @@ export default function JewelryCalculator() {
                     }
                     goldColor={
                       goldColor
+                    }
+                    isWhiteGold={
+                      isWhiteGold
                     }
                     conservation={
                       conservation

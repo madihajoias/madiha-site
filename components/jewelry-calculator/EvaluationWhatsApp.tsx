@@ -48,6 +48,9 @@ type Props = {
   goldColor:
     GoldColor;
 
+  isWhiteGold:
+    boolean;
+
   conservation:
     ConservationState;
 
@@ -143,6 +146,7 @@ export default function EvaluationWhatsApp({
   category,
   pieceType,
   goldColor,
+  isWhiteGold,
   conservation,
   goldWeight,
   karat,
@@ -290,6 +294,14 @@ export default function EvaluationWhatsApp({
     ];
 
   if (
+    isWhiteGold
+  ) {
+    lines.push(
+      'Regra comercial do ouro branco: 50% da cotação-base aplicável'
+    );
+  }
+
+  if (
     category ===
     'luxury'
   ) {
@@ -302,8 +314,12 @@ export default function EvaluationWhatsApp({
       `Documentação da marca: ${documentationText}`,
       `Regra de avaliação: ${
         luxuryPremiumEligible
-          ? 'Marca elegível para referência comercial de ouro 24k'
-          : 'Avaliação normal pelo teor informado'
+          ? isWhiteGold
+            ? 'Marca elegível para referência comercial de ouro 24k, com regra comercial de ouro branco aplicada'
+            : 'Marca elegível para referência comercial de ouro 24k'
+          : isWhiteGold
+            ? 'Avaliação pelo teor informado, com regra comercial de ouro branco aplicada'
+            : 'Avaliação normal pelo teor informado'
       }`
     );
   }

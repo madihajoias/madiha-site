@@ -71,8 +71,6 @@ export default function DiamondGroups({
     'placeholder:text-white/28',
     'focus:border-white/35',
     'focus:bg-black/15',
-    'disabled:cursor-not-allowed',
-    'disabled:opacity-40',
   ].join(' ');
 
   return (
@@ -92,10 +90,11 @@ export default function DiamondGroups({
               Brilhantes
             </h2>
 
-            <p className="mt-3 max-w-[440px] text-[11px] leading-6 text-[#F7F3F0]/48">
-              Informe grupos de brilhantes
-              com a mesma quantidade, peso,
-              cor e pureza.
+            <p className="mt-3 max-w-[480px] text-[11px] leading-6 text-[#F7F3F0]/48">
+              Agrupe pedras com o mesmo
+              peso, cor e pureza. Você
+              não precisa cadastrar cada
+              brilhante separadamente.
             </p>
           </div>
 
@@ -125,6 +124,19 @@ export default function DiamondGroups({
                   caratWeight
                 );
 
+              /*
+               * Quando existe faixa,
+               * mantemos exatamente as
+               * classificações utilizadas
+               * pelo cálculo.
+               *
+               * Quando NÃO existe faixa,
+               * liberamos as opções
+               * individuais para que o
+               * cliente consiga registrar
+               * a pedra para avaliação
+               * especializada.
+               */
               const colors =
                 range?.grouped
                   ? GROUPED_COLORS
@@ -142,6 +154,11 @@ export default function DiamondGroups({
                 createIdleResult(
                   group.id
                 );
+
+              const requiresSpecialist =
+                caratWeight >
+                  0 &&
+                !range;
 
               return (
                 <div
@@ -181,7 +198,8 @@ export default function DiamondGroups({
                     <div className="grid gap-5 md:grid-cols-2">
                       <label className="block">
                         <span className="mb-2 block text-[9px] uppercase tracking-[0.13em] text-[#F7F3F0]/50">
-                          Quantidade
+                          Quantidade de
+                          brilhantes iguais
                         </span>
 
                         <input
@@ -206,6 +224,13 @@ export default function DiamondGroups({
                             fieldClass
                           }
                         />
+
+                        <p className="mt-2 text-[9px] leading-4 text-white/30">
+                          Ex.: um colar
+                          com 80
+                          brilhantes iguais
+                          → informe 80.
+                        </p>
                       </label>
 
                       <label className="block">
@@ -232,7 +257,7 @@ export default function DiamondGroups({
                                   .value
                               )
                             }
-                            placeholder="Ex.: 0,40"
+                            placeholder="Ex.: 0,05 ou 8,05"
                             className={`${fieldClass} pr-14`}
                           />
 
@@ -240,6 +265,12 @@ export default function DiamondGroups({
                             ct
                           </span>
                         </div>
+
+                        <p className="mt-2 text-[9px] leading-4 text-white/30">
+                          Informe o peso
+                          individual de
+                          cada pedra.
+                        </p>
                       </label>
 
                       <label className="block">
@@ -250,9 +281,6 @@ export default function DiamondGroups({
                         <select
                           value={
                             group.color
-                          }
-                          disabled={
-                            !range
                           }
                           onChange={(
                             event
@@ -287,7 +315,9 @@ export default function DiamondGroups({
                                 }
                                 className="text-[#3E2B1B]"
                               >
-                                {color}
+                                {
+                                  color
+                                }
                               </option>
                             )
                           )}
@@ -302,9 +332,6 @@ export default function DiamondGroups({
                         <select
                           value={
                             group.clarity
-                          }
-                          disabled={
-                            !range
                           }
                           onChange={(
                             event
@@ -364,72 +391,121 @@ export default function DiamondGroups({
                       </div>
                     )}
 
-                    {result.status ===
-                      'loading' && (
-                      <div className="mt-5 rounded-[1.2rem] border border-white/8 bg-white/[0.04] px-5 py-4">
-                        <p className="text-[11px] text-white/45">
-                          Calculando valor
-                          dos brilhantes...
+                    {requiresSpecialist && (
+                      <div className="mt-5 rounded-[1.35rem] border border-[#D6BB8B]/25 bg-[#D6BB8B]/[0.075] px-5 py-5 backdrop-blur-xl">
+                        <p className="text-[9px] font-semibold uppercase tracking-[0.18em] text-[#D6BB8B]">
+                          Avaliação
+                          especializada
+                        </p>
+
+                        <p className="mt-3 font-serif text-[17px] leading-6 text-[#F7F3F0]">
+                          Este peso está
+                          fora da faixa
+                          disponível para
+                          cálculo
+                          automático.
+                        </p>
+
+                        <p className="mt-2 text-[11px] leading-5 text-[#F7F3F0]/50">
+                          Continue
+                          preenchendo cor
+                          e pureza. Os
+                          dados da pedra
+                          serão
+                          registrados para
+                          análise de um
+                          especialista.
                         </p>
                       </div>
                     )}
 
-                    {result.status ===
-                      'success' && (
-                      <div className="mt-5 rounded-[1.2rem] border border-[#D6BB8B]/15 bg-[#D6BB8B]/[0.065] px-5 py-4">
-                        <div className="flex items-end justify-between gap-5">
-                          <div>
-                            <p className="text-[9px] uppercase tracking-[0.13em] text-[#D6BB8B]">
-                              Valor do grupo
-                            </p>
-
-                            {parseInputNumber(
-                              group.quantity
-                            ) > 1 && (
-                              <p className="mt-2 text-[10px] text-white/38">
-                                {formatBRL(
-                                  result.unitValueBrl
-                                )}{' '}
-                                por pedra
-                              </p>
-                            )}
-                          </div>
-
-                          <strong className="font-serif text-[20px] font-normal text-[#F7F3F0]">
-                            {formatBRL(
-                              result.totalValueBrl
-                            )}
-                          </strong>
+                    {!requiresSpecialist &&
+                      result.status ===
+                        'loading' && (
+                        <div className="mt-5 rounded-[1.2rem] border border-white/8 bg-white/[0.04] px-5 py-4">
+                          <p className="text-[11px] text-white/45">
+                            Calculando
+                            valor dos
+                            brilhantes...
+                          </p>
                         </div>
-                      </div>
-                    )}
+                      )}
 
-                    {result.status ===
-                      'not-found' && (
-                      <div className="mt-5 rounded-[1.2rem] border border-[#D6BB8B]/18 bg-[#D6BB8B]/[0.05] px-5 py-4">
-                        <p className="text-[11px] leading-5 text-white/55">
-                          {
-                            result.message
-                          }
-                        </p>
-                      </div>
-                    )}
+                    {!requiresSpecialist &&
+                      result.status ===
+                        'success' && (
+                        <div className="mt-5 rounded-[1.2rem] border border-[#D6BB8B]/15 bg-[#D6BB8B]/[0.065] px-5 py-4">
+                          <div className="flex items-end justify-between gap-5">
+                            <div>
+                              <p className="text-[9px] uppercase tracking-[0.13em] text-[#D6BB8B]">
+                                Valor do
+                                grupo
+                              </p>
 
-                    {result.status ===
-                      'error' && (
-                      <div className="mt-5 rounded-[1.2rem] border border-red-200/15 bg-red-950/15 px-5 py-4">
-                        <p className="text-[11px] leading-5 text-red-100/75">
-                          {
-                            result.message
-                          }
-                        </p>
-                      </div>
-                    )}
+                              {parseInputNumber(
+                                group.quantity
+                              ) >
+                                1 && (
+                                <p className="mt-2 text-[10px] text-white/38">
+                                  {formatBRL(
+                                    result.unitValueBrl
+                                  )}{' '}
+                                  por pedra
+                                </p>
+                              )}
+                            </div>
+
+                            <strong className="font-serif text-[20px] font-normal text-[#F7F3F0]">
+                              {formatBRL(
+                                result.totalValueBrl
+                              )}
+                            </strong>
+                          </div>
+                        </div>
+                      )}
+
+                    {!requiresSpecialist &&
+                      result.status ===
+                        'not-found' && (
+                        <div className="mt-5 rounded-[1.2rem] border border-[#D6BB8B]/18 bg-[#D6BB8B]/[0.05] px-5 py-4">
+                          <p className="text-[11px] leading-5 text-white/55">
+                            {
+                              result.message
+                            }
+                          </p>
+                        </div>
+                      )}
+
+                    {!requiresSpecialist &&
+                      result.status ===
+                        'error' && (
+                        <div className="mt-5 rounded-[1.2rem] border border-red-200/15 bg-red-950/15 px-5 py-4">
+                          <p className="text-[11px] leading-5 text-red-100/75">
+                            {
+                              result.message
+                            }
+                          </p>
+                        </div>
+                      )}
                   </div>
                 </div>
               );
             }
           )}
+        </div>
+
+        <div className="mt-6 rounded-[1.35rem] border border-white/8 bg-white/[0.025] px-5 py-4">
+          <p className="text-[10px] leading-5 text-white/38">
+            Exemplo: um colar
+            com 80 brilhantes
+            de 0,05 ct, mesma
+            cor e pureza, pode
+            ser informado em um
+            único grupo:
+            quantidade 80 e
+            peso individual
+            0,05 ct.
+          </p>
         </div>
 
         <button
@@ -442,8 +518,8 @@ export default function DiamondGroups({
             strokeWidth={1}
           />
 
-          Adicionar grupo de
-          brilhantes
+          Adicionar outro grupo
+          de brilhantes
         </button>
       </div>
     </div>

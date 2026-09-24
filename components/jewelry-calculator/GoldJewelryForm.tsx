@@ -10,6 +10,8 @@ import {
 type Props = {
   premium: boolean;
 
+  isWhiteGold: boolean;
+
   goldWeight: string;
 
   karat: GoldKarat;
@@ -27,6 +29,7 @@ type Props = {
 
 export default function GoldJewelryForm({
   premium,
+  isWhiteGold,
   goldWeight,
   karat,
   goldPricePerGram,
@@ -34,6 +37,20 @@ export default function GoldJewelryForm({
   onGoldWeightChange,
   onKaratChange,
 }: Props) {
+  const whiteGoldKarats:
+    GoldKarat[] = [
+      '18k',
+      '16k',
+      '14k',
+      '12k',
+      '10k',
+    ];
+
+  const availableKarats =
+    isWhiteGold
+      ? whiteGoldKarats
+      : KARATS;
+
   const inputClass =
     premium
       ? [
@@ -266,7 +283,7 @@ export default function GoldJewelryForm({
               }
               className={`${inputClass} cursor-pointer appearance-none`}
             >
-              {KARATS.map(
+              {availableKarats.map(
                 (item) => (
                   <option
                     key={item}
@@ -280,6 +297,44 @@ export default function GoldJewelryForm({
             </select>
           </label>
         </div>
+
+        {isWhiteGold && (
+          <div
+            className={[
+              'mt-6 rounded-[1.35rem] border px-5 py-4',
+
+              premium
+                ? 'border-[#D6BB8B]/20 bg-[#D6BB8B]/[0.06]'
+                : 'border-white/40 bg-white/15',
+            ].join(' ')}
+          >
+            <p
+              className={[
+                'text-[9px] font-semibold uppercase tracking-[0.17em]',
+
+                premium
+                  ? 'text-[#D6BB8B]'
+                  : 'text-[#5F431F]',
+              ].join(' ')}
+            >
+              Regra comercial — ouro branco
+            </p>
+
+            <p
+              className={[
+                'mt-2 text-[10px] leading-5',
+
+                premium
+                  ? 'text-[#F7F3F0]/48'
+                  : 'text-[#513A1C]/75',
+              ].join(' ')}
+            >
+              O valor por grama já considera
+              o ajuste comercial de 50% sobre
+              a cotação-base aplicável.
+            </p>
+          </div>
+        )}
 
         <div
           className={[

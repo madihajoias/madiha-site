@@ -1,3 +1,7 @@
+import {
+  findCaratRange,
+} from '../../lib/diamond-pricing';
+
 import type {
   BrandDocumentation,
   ConservationState,
@@ -17,6 +21,7 @@ import {
 import {
   formatBRL,
   formatNumber,
+  parseInputNumber,
 } from '../../lib/jewelry-utils';
 
 import EvaluationWhatsApp from './EvaluationWhatsApp';
@@ -67,6 +72,9 @@ type Props = {
   goldColor:
     GoldColor;
 
+  isWhiteGold:
+    boolean;
+
   conservation:
     ConservationState;
 
@@ -103,34 +111,11 @@ function getTitle(
       return 'Valor do ouro';
 
     case 'diamonds':
-      return 'Valor da peça';
-
     case 'luxury':
       return 'Valor da peça';
 
     default:
       return 'Valor da peça';
-  }
-}
-
-function getTotalLabel(
-  category:
-    JewelryCategory
-) {
-  switch (
-    category
-  ) {
-    case 'gold':
-      return 'Valor estimado do ouro';
-
-    case 'diamonds':
-      return 'Valor estimado da joia';
-
-    case 'luxury':
-      return 'Estimativa inicial da joia';
-
-    default:
-      return 'Valor estimado';
   }
 }
 
@@ -149,6 +134,7 @@ export default function EvaluationResult({
   diamondUsdBrl,
   pieceType,
   goldColor,
+  isWhiteGold,
   conservation,
   gemCertificate,
   otherCertificate,
@@ -164,6 +150,49 @@ export default function EvaluationResult({
 
   const hasDiamonds =
     premium;
+
+  /*
+   * =====================================================
+   * PEDRAS FORA DA FAIXA AUTOMÁTICA
+   * =====================================================
+   */
+
+  const specialistGroups =
+    hasDiamonds
+      ? diamondGroups.filter(
+          (
+            group
+          ) => {
+            const weight =
+              parseInputNumber(
+                group.caratWeight
+              );
+
+            return (
+              weight >
+                0 &&
+              !findCaratRange(
+                weight
+              )
+            );
+          }
+        )
+      : [];
+
+  const hasSpecialistDiamonds =
+    specialistGroups.length >
+    0;
+
+  const totalLabel =
+    category ===
+    'gold'
+      ? 'Valor estimado do ouro'
+      : hasSpecialistDiamonds
+        ? 'Estimativa parcial'
+        : category ===
+            'luxury'
+          ? 'Estimativa inicial da joia'
+          : 'Valor estimado da joia';
 
   return (
     <div className="lg:sticky lg:top-[120px]">
@@ -317,6 +346,10 @@ export default function EvaluationResult({
                     {luxuryPremiumEligible
                       ? 'Referência 24K'
                       : karat.toUpperCase()}
+
+                    {isWhiteGold
+                      ? ' • Ouro branco'
+                      : ''}
                   </p>
                 )}
               </div>
@@ -354,14 +387,132 @@ export default function EvaluationResult({
                   </p>
                 </div>
 
-                <strong className="font-serif text-[20px] font-normal text-[#F7F3F0]">
-                  {formatBRL(
-                    diamondsValue
-                  )}
-                </strong>
+                {hasSpecialistDiamonds ? (
+                  <div className="text-right">
+                    <strong className="font-serif text-[18px] font-normal text-[#D6BB8B]">
+                      Sob avaliação
+                    </strong>
+
+                    {diamondsValue >
+                      0 && (
+                      <p className="mt-1 text-[9px] text-white/35">
+                        {formatBRL(
+                          diamondsValue
+                        )}{' '}
+                        já calculados
+                      </p>
+                    )}
+                  </div>
+                ) : (
+                  <strong className="font-serif text-[20px] font-normal text-[#F7F3F0]">
+                    {formatBRL(
+                      diamondsValue
+                    )}
+                  </strong>
+                )}
               </div>
             )}
           </div>
+
+          {isWhiteGold && (
+            <div
+              className={[
+                'mt-7 rounded-[1.35rem] border px-5 py-5',
+
+                premium
+                  ? 'border-[#D6BB8B]/22 bg-[#D6BB8B]/[0.065]'
+                  : 'border-[#52350F]/16 bg-white/15',
+              ].join(' ')}
+            >
+              <p
+                className={[
+                  'text-[9px] font-semibold uppercase tracking-[0.17em]',
+
+                  premium
+                    ? 'text-[#D6BB8B]'
+                    : 'text-[#5F431F]',
+                ].join(' ')}
+              >
+                Ouro branco
+              </p>
+
+              <p
+                className={[
+                  'mt-3 text-[10px] leading-5',
+
+                  premium
+                    ? 'text-[#F7F3F0]/50'
+                    : 'text-[#513A1C]/75',
+                ].join(' ')}
+              >
+                Esta estimativa já aplica
+                a regra comercial de 50%
+                sobre a cotação-base
+                utilizada para o ouro.
+              </p>
+            </div>
+          )}
+
+          {hasSpecialistDiamonds && (
+            <div className="mt-7 rounded-[1.35rem] border border-[#D6BB8B]/22 bg-[#D6BB8B]/[0.065] px-5 py-5">
+              <p className="text-[9px] font-semibold uppercase tracking-[0.17em] text-[#D6BB8B]">
+                Avaliação
+                especializada
+              </p>
+
+              <p className="mt-3 font-serif text-[17px] leading-6 text-[#F7F3F0]">
+                {specialistGroups.length ===
+                1
+                  ? 'Uma pedra informada está fora da faixa de cálculo automático.'
+                  : `${specialistGroups.length} grupos informados estão fora da faixa de cálculo automático.`}
+              </p>
+
+              <div className="mt-4 space-y-3">
+                {specialistGroups.map(
+                  (
+                    group,
+                    index
+                  ) => (
+                    <div
+                      key={
+                        group.id
+                      }
+                      className="border-t border-white/10 pt-3 text-[10px] leading-5 text-white/50"
+                    >
+                      <span className="text-white/75">
+                        Pedra{' '}
+                        {index +
+                          1}:
+                      </span>{' '}
+
+                      {group.quantity ||
+                        '1'}{' '}
+                      ×{' '}
+
+                      {group.caratWeight ||
+                        '—'}{' '}
+                      ct
+
+                      {group.color
+                        ? ` • Cor ${group.color}`
+                        : ''}
+
+                      {group.clarity
+                        ? ` • Pureza ${group.clarity}`
+                        : ''}
+                    </div>
+                  )
+                )}
+              </div>
+
+              <p className="mt-4 text-[10px] leading-5 text-[#F7F3F0]/45">
+                O valor dessas
+                pedras não foi
+                incluído na
+                estimativa abaixo.
+              </p>
+            </div>
+          )}
 
           <div className="mt-9">
             <p
@@ -373,9 +524,9 @@ export default function EvaluationResult({
                   : 'text-[#68491F]',
               ].join(' ')}
             >
-              {getTotalLabel(
-                category
-              )}
+              {
+                totalLabel
+              }
             </p>
 
             <p
@@ -393,6 +544,17 @@ export default function EvaluationResult({
                     totalValue
                   )}
             </p>
+
+            {hasSpecialistDiamonds && (
+              <p className="mt-3 text-[10px] leading-5 text-white/40">
+                Valor parcial:
+                não inclui{' '}
+                {specialistGroups.length ===
+                1
+                  ? 'a pedra que requer avaliação especializada.'
+                  : 'as pedras que requerem avaliação especializada.'}
+              </p>
+            )}
           </div>
 
           {hasDiamonds &&
@@ -429,6 +591,9 @@ export default function EvaluationResult({
             }
             goldColor={
               goldColor
+            }
+            isWhiteGold={
+              isWhiteGold
             }
             conservation={
               conservation
@@ -496,16 +661,13 @@ export default function EvaluationResult({
                 : 'text-[#513A1C]/75',
             ].join(' ')}
           >
-            Esta estimativa é
-            informativa. O valor
-            definitivo depende da
-            conferência do teor,
-            peso, autenticidade
-            {hasDiamonds
-              ? ' e classificação das pedras'
-              : ''}
-            {' '}durante a avaliação
-            técnica.
+            {hasSpecialistDiamonds
+              ? 'Esta é uma estimativa parcial. O valor apresentado não inclui as pedras que estão fora da faixa disponível para cálculo automático. A avaliação definitiva depende da conferência técnica.'
+              : `Esta estimativa é informativa. O valor definitivo depende da conferência do teor, peso, autenticidade${
+                  hasDiamonds
+                    ? ' e classificação das pedras'
+                    : ''
+                } durante a avaliação técnica.`}
           </p>
         </div>
       </div>
