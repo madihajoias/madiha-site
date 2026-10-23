@@ -1,6 +1,11 @@
 'use client';
 
-import { FormEvent, useEffect, useMemo, useState } from 'react';
+import {
+  FormEvent,
+  useEffect,
+  useMemo,
+  useState,
+} from 'react';
 
 type GoldKarat =
   | '24k'
@@ -11,9 +16,21 @@ type GoldKarat =
   | '12k'
   | '10k';
 
+type GoldType =
+  | 'yellow'
+  | 'white';
+
 type GoldPriceResponse = {
-  bolsa: Record<GoldKarat, number>;
-  comercial: Record<GoldKarat, number>;
+  bolsa: Record<
+    GoldKarat,
+    number
+  >;
+
+  comercial: Record<
+    GoldKarat,
+    number
+  >;
+
   updatedAt: string;
 };
 
@@ -22,51 +39,212 @@ const KARATS: {
   label: string;
   purity: string;
 }[] = [
-  { value: '24k', label: 'Ouro 24k', purity: '100%' },
-  { value: '22k', label: 'Ouro 22k', purity: '91,67%' },
-  { value: '18k', label: 'Ouro 18k', purity: '75%' },
-  { value: '16k', label: 'Ouro 16k', purity: '66,67%' },
-  { value: '14k', label: 'Ouro 14k', purity: '58,33%' },
-  { value: '12k', label: 'Ouro 12k', purity: '50%' },
-  { value: '10k', label: 'Ouro 10k', purity: '41,67%' },
+  {
+    value: '24k',
+    label: 'Ouro 24k',
+    purity: '100%',
+  },
+  {
+    value: '22k',
+    label: 'Ouro 22k',
+    purity: '91,67%',
+  },
+  {
+    value: '18k',
+    label: 'Ouro 18k',
+    purity: '75%',
+  },
+  {
+    value: '16k',
+    label: 'Ouro 16k',
+    purity: '66,67%',
+  },
+  {
+    value: '14k',
+    label: 'Ouro 14k',
+    purity: '58,33%',
+  },
+  {
+    value: '12k',
+    label: 'Ouro 12k',
+    purity: '50%',
+  },
+  {
+    value: '10k',
+    label: 'Ouro 10k',
+    purity: '41,67%',
+  },
 ];
 
-const currencyFormatter = new Intl.NumberFormat('pt-BR', {
-  style: 'currency',
-  currency: 'BRL',
-});
+const WHITE_GOLD_KARATS:
+  GoldKarat[] = [
+    '18k',
+    '16k',
+    '14k',
+    '12k',
+    '10k',
+  ];
+
+const currencyFormatter =
+  new Intl.NumberFormat(
+    'pt-BR',
+    {
+      style: 'currency',
+      currency: 'BRL',
+    }
+  );
 
 export default function GoldCalculator() {
-  const [weight, setWeight] = useState('');
-  const [karat, setKarat] = useState<GoldKarat>('18k');
+  const [
+    weight,
+    setWeight,
+  ] = useState('');
 
-  const [prices, setPrices] = useState<GoldPriceResponse | null>(null);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState('');
-  const [hasCalculated, setHasCalculated] = useState(false);
+  const [
+    karat,
+    setKarat,
+  ] =
+    useState<GoldKarat>(
+      '18k'
+    );
 
-  // Pré-carrega a mesma cotação usada pela calculadora para alimentar o letreiro.
+  const [
+    goldType,
+    setGoldType,
+  ] =
+    useState<GoldType>(
+      'yellow'
+    );
+
+  const [
+    prices,
+    setPrices,
+  ] =
+    useState<GoldPriceResponse | null>(
+      null
+    );
+
+  const [
+    loading,
+    setLoading,
+  ] = useState(false);
+
+  const [
+    error,
+    setError,
+  ] = useState('');
+
+  const [
+    hasCalculated,
+    setHasCalculated,
+  ] = useState(false);
+
+  const isWhiteGold =
+    goldType === 'white';
+
+  /*
+   * =====================================================
+   * TEOR DISPONÍVEL
+   * =====================================================
+   */
+
+  const availableKarats =
+    useMemo(() => {
+      if (!isWhiteGold) {
+        return KARATS;
+      }
+
+      return KARATS.filter(
+        (item) =>
+          WHITE_GOLD_KARATS.includes(
+            item.value
+          )
+      );
+    }, [isWhiteGold]);
+
+  /*
+   * =====================================================
+   * ALTERAR TIPO DO OURO
+   * =====================================================
+   */
+
+  const handleGoldTypeChange =
+    (
+      value: GoldType
+    ) => {
+      setGoldType(value);
+
+      /*
+       * Ouro branco não trabalha
+       * com 24k nem 22k nesta
+       * regra comercial.
+       *
+       * Caso um deles esteja
+       * selecionado, voltamos
+       * automaticamente para 18k.
+       */
+
+      if (
+        value === 'white' &&
+        (
+          karat === '24k' ||
+          karat === '22k'
+        )
+      ) {
+        setKarat('18k');
+      }
+    };
+
+  /*
+   * =====================================================
+   * PRÉ-CARREGAR COTAÇÃO
+   * =====================================================
+   */
+
   useEffect(() => {
     let active = true;
 
     async function loadTickerPrices() {
       try {
-        const response = await fetch('/api/gold-price', {
-          method: 'GET',
-          headers: {
-            Accept: 'application/json',
-          },
-        });
+        const response =
+          await fetch(
+            '/api/gold-price',
+            {
+              method:
+                'GET',
 
-        if (!response.ok) return;
+              headers: {
+                Accept:
+                  'application/json',
+              },
 
-        const data: GoldPriceResponse = await response.json();
+              cache:
+                'no-store',
+            }
+          );
+
+        if (
+          !response.ok
+        ) {
+          return;
+        }
+
+        const data:
+          GoldPriceResponse =
+          await response.json();
 
         if (active) {
-          setPrices(data);
+          setPrices(
+            data
+          );
         }
       } catch {
-        // O letreiro continua com o texto institucional caso a API esteja indisponível.
+        /*
+         * O letreiro continua
+         * funcionando com textos
+         * institucionais caso a API
+         * esteja indisponível.
+         */
       }
     }
 
@@ -77,93 +255,231 @@ export default function GoldCalculator() {
     };
   }, []);
 
-  const parsedWeight = useMemo(() => {
-    return Number(
-      weight
-        .replace(',', '.')
-        .trim()
-    );
-  }, [weight]);
+  /*
+   * =====================================================
+   * PESO
+   * =====================================================
+   */
 
-  const selectedKarat = useMemo(() => {
-    return KARATS.find(
-      (item) => item.value === karat
-    );
-  }, [karat]);
+  const parsedWeight =
+    useMemo(() => {
+      return Number(
+        weight
+          .replace(
+            /\./g,
+            ''
+          )
+          .replace(
+            ',',
+            '.'
+          )
+          .trim()
+      );
+    }, [weight]);
 
-  const result = useMemo(() => {
-    if (
-      !prices ||
-      !Number.isFinite(parsedWeight) ||
-      parsedWeight <= 0
-    ) {
-      return null;
-    }
+  /*
+   * =====================================================
+   * TEOR SELECIONADO
+   * =====================================================
+   */
 
-    return {
-      market:
-        prices.bolsa[karat] * parsedWeight,
+  const selectedKarat =
+    useMemo(() => {
+      return KARATS.find(
+        (item) =>
+          item.value ===
+          karat
+      );
+    }, [karat]);
 
-      commercial:
-        prices.comercial[karat] * parsedWeight,
+  /*
+   * =====================================================
+   * CÁLCULO
+   * =====================================================
+   */
 
-      marketPerGram:
-        prices.bolsa[karat],
+  const result =
+    useMemo(() => {
+      if (
+        !prices ||
+        !Number.isFinite(
+          parsedWeight
+        ) ||
+        parsedWeight <= 0
+      ) {
+        return null;
+      }
 
-      commercialPerGram:
-        prices.comercial[karat],
-    };
-  }, [prices, karat, parsedWeight]);
+      /*
+       * Referência teórica
+       * da bolsa.
+       */
 
-  const tickerItems = useMemo(() => {
-    const ounceBRL = prices
-      ? prices.bolsa['24k'] * 31.1035
-      : null;
+      const marketPerGram =
+        prices.bolsa[
+          karat
+        ];
 
-    const updatedLabel = prices?.updatedAt
-      ? new Date(prices.updatedAt).toLocaleString('pt-BR', {
-          dateStyle: 'long',
-          timeStyle: 'short',
-        })
-      : 'cotação sendo atualizada';
+      /*
+       * Cotação comercial
+       * normal do teor.
+       */
 
-    return [
-      'Madiha Cotações',
-      'Cotação do ouro hoje',
-      ounceBRL
-        ? `Onça Troy 31,1035 g • ${currencyFormatter.format(ounceBRL)}`
-        : 'Onça Troy • 31,1035 g',
-      prices
-        ? `Ouro 24k • 1 g ${currencyFormatter.format(prices.bolsa['24k'])}`
-        : 'Ouro 24k • cotação atualizada',
-      prices
-        ? `Preço comercial de referência 24k • ${currencyFormatter.format(prices.comercial['24k'])}/g`
-        : 'Preço comercial de referência',
-      prices
-        ? `Ouro 18k • 1 g ${currencyFormatter.format(prices.bolsa['18k'])}`
-        : 'Ouro 18k • cotação atualizada',
-      'Compramos ouro, lingotes e barras',
-      'Avaliação de ouro 24k a 10k',
-      'Vogue Square • Barra da Tijuca • Rio de Janeiro',
-      'Balança de precisão hidrostática • comprovante na avaliação',
-      'Compramos joias de ouro em qualquer estado',
-      'Avaliação online, na loja com hora marcada ou pela calculadora de ouro',
-      `Madiha Informa • ${updatedLabel}`,
-    ];
-  }, [prices]);
+      const baseCommercialPerGram =
+        prices.comercial[
+          karat
+        ];
+
+      /*
+       * REGRA OURO BRANCO
+       *
+       * Ouro amarelo:
+       * 100% da cotação comercial.
+       *
+       * Ouro branco:
+       * 50% da cotação comercial
+       * aplicável ao teor.
+       */
+
+      const commercialPerGram =
+        isWhiteGold
+          ? baseCommercialPerGram *
+            0.5
+          : baseCommercialPerGram;
+
+      return {
+        market:
+          marketPerGram *
+          parsedWeight,
+
+        commercial:
+          commercialPerGram *
+          parsedWeight,
+
+        marketPerGram,
+
+        commercialPerGram,
+
+        baseCommercialPerGram,
+      };
+    }, [
+      prices,
+      karat,
+      parsedWeight,
+      isWhiteGold,
+    ]);
+
+  /*
+   * =====================================================
+   * LETREIRO
+   * =====================================================
+   */
+
+  const tickerItems =
+    useMemo(() => {
+      const ounceBRL =
+        prices
+          ? prices.bolsa[
+              '24k'
+            ] *
+            31.1035
+          : null;
+
+      const updatedLabel =
+        prices?.updatedAt
+          ? new Date(
+              prices.updatedAt
+            ).toLocaleString(
+              'pt-BR',
+              {
+                dateStyle:
+                  'long',
+
+                timeStyle:
+                  'short',
+              }
+            )
+          : 'cotação sendo atualizada';
+
+      return [
+        'Madiha Cotações',
+
+        'Cotação do ouro hoje',
+
+        ounceBRL
+          ? `Onça Troy 31,1035 g • ${currencyFormatter.format(
+              ounceBRL
+            )}`
+          : 'Onça Troy • 31,1035 g',
+
+        prices
+          ? `Ouro 24k • 1 g ${currencyFormatter.format(
+              prices.bolsa[
+                '24k'
+              ]
+            )}`
+          : 'Ouro 24k • cotação atualizada',
+
+        prices
+          ? `Preço comercial de referência 24k • ${currencyFormatter.format(
+              prices.comercial[
+                '24k'
+              ]
+            )}/g`
+          : 'Preço comercial de referência',
+
+        prices
+          ? `Ouro 18k • 1 g ${currencyFormatter.format(
+              prices.bolsa[
+                '18k'
+              ]
+            )}`
+          : 'Ouro 18k • cotação atualizada',
+
+        'Compramos ouro amarelo e ouro branco',
+
+        'Ouro branco • avaliação de 18k a 10k',
+
+        'Compramos ouro, lingotes e barras',
+
+        'Avaliação de ouro 24k a 10k',
+
+        'Vogue Square • Barra da Tijuca • Rio de Janeiro',
+
+        'Balança de precisão hidrostática • comprovante na avaliação',
+
+        'Compramos joias de ouro em qualquer estado',
+
+        'Avaliação online, na loja com hora marcada ou pela calculadora de ouro',
+
+        `Madiha Informa • ${updatedLabel}`,
+      ];
+    }, [prices]);
+
+  /*
+   * =====================================================
+   * CALCULAR
+   * =====================================================
+   */
 
   async function handleSubmit(
-    event: FormEvent<HTMLFormElement>
+    event:
+      FormEvent<HTMLFormElement>
   ) {
     event.preventDefault();
 
     setError('');
 
     if (
-      !Number.isFinite(parsedWeight) ||
+      !Number.isFinite(
+        parsedWeight
+      ) ||
       parsedWeight <= 0
     ) {
-      setHasCalculated(false);
+      setHasCalculated(
+        false
+      );
+
       setError(
         'Informe um peso válido em gramas.'
       );
@@ -174,35 +490,55 @@ export default function GoldCalculator() {
     try {
       setLoading(true);
 
-      const response = await fetch(
-        '/api/gold-price',
-        {
-          method: 'GET',
-          headers: {
-            Accept: 'application/json',
-          },
-        }
-      );
+      const response =
+        await fetch(
+          '/api/gold-price',
+          {
+            method:
+              'GET',
 
-      const data = await response.json();
+            headers: {
+              Accept:
+                'application/json',
+            },
 
-      if (!response.ok) {
+            cache:
+              'no-store',
+          }
+        );
+
+      const data =
+        await response.json();
+
+      if (
+        !response.ok
+      ) {
         throw new Error(
           data?.error ||
             'Não foi possível consultar a cotação.'
         );
       }
 
-      setPrices(data);
+      setPrices(
+        data as GoldPriceResponse
+      );
 
-      window.setTimeout(() => {
-        setHasCalculated(true);
-      }, 120);
+      window.setTimeout(
+        () => {
+          setHasCalculated(
+            true
+          );
+        },
+        120
+      );
     } catch (err) {
-      setHasCalculated(false);
+      setHasCalculated(
+        false
+      );
 
       setError(
-        err instanceof Error
+        err instanceof
+          Error
           ? err.message
           : 'Não foi possível calcular o valor.'
       );
@@ -228,9 +564,8 @@ export default function GoldCalculator() {
         pt-20
       "
     >
-
       {/* =====================================================
-          LETREIRO SUPERIOR — COTAÇÃO / SERVIÇOS
+          LETREIRO SUPERIOR
       ====================================================== */}
 
       <div
@@ -251,37 +586,57 @@ export default function GoldCalculator() {
         "
       >
         <div className="gold-ticker-track flex w-max items-center">
-          {[0, 1].map((copyIndex) => (
-            <div
-              key={copyIndex}
-              className="flex shrink-0 items-center whitespace-nowrap"
-              aria-hidden={copyIndex === 1}
-            >
-              {tickerItems.map((item, index) => (
-                <div
-                  key={`${copyIndex}-${index}`}
-                  className="flex items-center"
-                >
-                  <span
-                    className={`mx-5 text-[10px] uppercase tracking-[0.28em] text-[#5A431F] ${
-                      index === 0 ? 'font-semibold' : 'font-medium'
-                    }`}
-                  >
-                    {item}
-                  </span>
+          {[0, 1].map(
+            (
+              copyIndex
+            ) => (
+              <div
+                key={
+                  copyIndex
+                }
+                className="flex shrink-0 items-center whitespace-nowrap"
+                aria-hidden={
+                  copyIndex ===
+                  1
+                }
+              >
+                {tickerItems.map(
+                  (
+                    item,
+                    index
+                  ) => (
+                    <div
+                      key={`${copyIndex}-${index}`}
+                      className="flex items-center"
+                    >
+                      <span
+                        className={`mx-5 text-[10px] uppercase tracking-[0.28em] text-[#5A431F] ${
+                          index ===
+                          0
+                            ? 'font-semibold'
+                            : 'font-medium'
+                        }`}
+                      >
+                        {
+                          item
+                        }
+                      </span>
 
-                  <span
-                    aria-hidden="true"
-                    className="text-[#765525]/30"
-                  >
-                    •
-                  </span>
-                </div>
-              ))}
-            </div>
-          ))}
+                      <span
+                        aria-hidden="true"
+                        className="text-[#765525]/30"
+                      >
+                        •
+                      </span>
+                    </div>
+                  )
+                )}
+              </div>
+            )
+          )}
         </div>
       </div>
+
       {/* =====================================================
           ATMOSFERA
       ====================================================== */}
@@ -298,9 +653,9 @@ export default function GoldCalculator() {
       >
         <div
           className="
+            calculator-background
             absolute
             inset-0
-            calculator-background
           "
         />
 
@@ -420,7 +775,9 @@ export default function GoldCalculator() {
               text-[#8F6E3F]
             "
           >
-            Madiha Maison • Cotação do Ouro
+            Madiha Maison
+            {' • '}
+            Cotação do Ouro
           </p>
 
           <h2
@@ -451,10 +808,13 @@ export default function GoldCalculator() {
               md:text-base
             "
           >
-            Consulte uma estimativa do valor
-            comercial do seu ouro com base no
-            peso, no teor informado e na
-            cotação atual do mercado.
+            Consulte uma
+            estimativa do valor
+            comercial do seu ouro
+            com base no peso, no
+            teor, no tipo informado
+            e na cotação atual do
+            mercado.
           </p>
 
           <div
@@ -479,45 +839,65 @@ export default function GoldCalculator() {
             "
           >
             {[
-              ['Cotação', 'Atualizada'],
-              ['Teores', '24k a 10k'],
-              ['Resultado', 'Imediato'],
-            ].map(([label, value]) => (
-              <div
-                key={label}
-                className="
-                  info-glass
-                  rounded-[1.25rem]
-                  px-4
-                  py-5
-                  md:px-5
-                "
-              >
-                <p
+              [
+                'Cotação',
+                'Atualizada',
+              ],
+              [
+                'Teores',
+                '24k a 10k',
+              ],
+              [
+                'Tipos',
+                'Amarelo e Branco',
+              ],
+            ].map(
+              ([
+                label,
+                value,
+              ]) => (
+                <div
+                  key={
+                    label
+                  }
                   className="
-                    text-[8px]
-                    font-semibold
-                    uppercase
-                    tracking-[0.16em]
-                    text-[#86663A]
+                    info-glass
+                    rounded-[1.25rem]
+                    px-4
+                    py-5
+                    md:px-5
                   "
                 >
-                  {label}
-                </p>
+                  <p
+                    className="
+                      text-[8px]
+                      font-semibold
+                      uppercase
+                      tracking-[0.16em]
+                      text-[#86663A]
+                    "
+                  >
+                    {
+                      label
+                    }
+                  </p>
 
-                <p
-                  className="
-                    mt-2
-                    font-serif
-                    text-sm
-                    text-[#68491F]
-                    md:text-base
-                  "
-                >
-                  {value}
-                </p>
-              </div>
-            ))}
+                  <p
+                    className="
+                      mt-2
+                      font-serif
+                      text-sm
+                      text-[#68491F]
+                      md:text-base
+                    "
+                  >
+                    {
+                      value
+                    }
+                  </p>
+                </div>
+              )
+            )}
           </div>
         </div>
 
@@ -607,10 +987,14 @@ export default function GoldCalculator() {
                   "
                 />
 
-                {/* FORM */}
+                {/* =================================================
+                    FORM
+                ================================================== */}
 
                 <form
-                  onSubmit={handleSubmit}
+                  onSubmit={
+                    handleSubmit
+                  }
                   className="mt-8 space-y-6"
                 >
                   {/* PESO */}
@@ -638,10 +1022,16 @@ export default function GoldCalculator() {
                         inputMode="decimal"
                         autoComplete="off"
                         placeholder="Ex: 15,5"
-                        value={weight}
-                        onChange={(event) =>
+                        value={
+                          weight
+                        }
+                        onChange={(
+                          event
+                        ) =>
                           setWeight(
-                            event.target.value
+                            event
+                              .target
+                              .value
                           )
                         }
                         className="
@@ -678,6 +1068,79 @@ export default function GoldCalculator() {
                     </div>
                   </div>
 
+                  {/* TIPO DE OURO */}
+
+                  <div>
+                    <label
+                      htmlFor="gold-type"
+                      className="
+                        mb-2
+                        block
+                        text-[9px]
+                        font-semibold
+                        uppercase
+                        tracking-[0.19em]
+                        text-[#5F431F]
+                      "
+                    >
+                      Tipo de ouro
+                    </label>
+
+                    <div className="relative">
+                      <select
+                        id="gold-type"
+                        value={
+                          goldType
+                        }
+                        onChange={(
+                          event
+                        ) =>
+                          handleGoldTypeChange(
+                            event
+                              .target
+                              .value as GoldType
+                          )
+                        }
+                        className="
+                          luxury-field
+                          w-full
+                          cursor-pointer
+                          appearance-none
+                          rounded-full
+                          px-6
+                          py-[17px]
+                          pr-12
+                          text-sm
+                          font-medium
+                          text-[#503615]
+                          outline-none
+                        "
+                      >
+                        <option value="yellow">
+                          Ouro amarelo
+                        </option>
+
+                        <option value="white">
+                          Ouro branco
+                        </option>
+                      </select>
+
+                      <span
+                        aria-hidden="true"
+                        className="
+                          pointer-events-none
+                          absolute
+                          right-6
+                          top-1/2
+                          -translate-y-1/2
+                          text-[#5B3D18]
+                        "
+                      >
+                        ↓
+                      </span>
+                    </div>
+                  </div>
+
                   {/* TEOR */}
 
                   <div>
@@ -699,10 +1162,15 @@ export default function GoldCalculator() {
                     <div className="relative">
                       <select
                         id="gold-karat"
-                        value={karat}
-                        onChange={(event) =>
+                        value={
+                          karat
+                        }
+                        onChange={(
+                          event
+                        ) =>
                           setKarat(
-                            event.target
+                            event
+                              .target
                               .value as GoldKarat
                           )
                         }
@@ -721,15 +1189,28 @@ export default function GoldCalculator() {
                           outline-none
                         "
                       >
-                        {KARATS.map((item) => (
-                          <option
-                            key={item.value}
-                            value={item.value}
-                          >
-                            {item.label} —{' '}
-                            {item.purity}
-                          </option>
-                        ))}
+                        {availableKarats.map(
+                          (
+                            item
+                          ) => (
+                            <option
+                              key={
+                                item.value
+                              }
+                              value={
+                                item.value
+                              }
+                            >
+                              {
+                                item.label
+                              }{' '}
+                              —{' '}
+                              {
+                                item.purity
+                              }
+                            </option>
+                          )
+                        )}
                       </select>
 
                       <span
@@ -747,6 +1228,53 @@ export default function GoldCalculator() {
                       </span>
                     </div>
                   </div>
+
+                  {/* REGRA OURO BRANCO */}
+
+                  {isWhiteGold && (
+                    <div
+                      className="
+                        rounded-[1.35rem]
+                        border
+                        border-white/40
+                        bg-white/15
+                        px-5
+                        py-4
+                        backdrop-blur-xl
+                      "
+                    >
+                      <p
+                        className="
+                          text-[9px]
+                          font-semibold
+                          uppercase
+                          tracking-[0.17em]
+                          text-[#5F431F]
+                        "
+                      >
+                        Regra comercial
+                        {' — '}
+                        ouro branco
+                      </p>
+
+                      <p
+                        className="
+                          mt-2
+                          text-[10px]
+                          leading-5
+                          text-[#513A1C]/75
+                        "
+                      >
+                        O valor por grama
+                        já considera o
+                        ajuste comercial
+                        de 50% sobre a
+                        cotação-base
+                        aplicável ao teor
+                        selecionado.
+                      </p>
+                    </div>
+                  )}
 
                   {/* ERRO */}
 
@@ -766,7 +1294,9 @@ export default function GoldCalculator() {
                         backdrop-blur-xl
                       "
                     >
-                      {error}
+                      {
+                        error
+                      }
                     </div>
                   )}
 
@@ -774,7 +1304,9 @@ export default function GoldCalculator() {
 
                   <button
                     type="submit"
-                    disabled={loading}
+                    disabled={
+                      loading
+                    }
                     className={`
                       luxury-button
                       relative
@@ -882,7 +1414,8 @@ export default function GoldCalculator() {
                     ease-out
 
                     ${
-                      hasCalculated && result
+                      hasCalculated &&
+                      result
                         ? `
                           mt-8
                           grid-rows-[1fr]
@@ -979,8 +1512,13 @@ export default function GoldCalculator() {
                                 {parsedWeight.toLocaleString(
                                   'pt-BR'
                                 )}{' '}
-                                g •{' '}
-                                {selectedKarat?.label}
+                                g
+                                {' • '}
+                                {isWhiteGold
+                                  ? 'Ouro branco'
+                                  : 'Ouro amarelo'}
+                                {' • '}
+                                {karat.toUpperCase()}
                               </p>
                             </div>
 
@@ -1011,6 +1549,52 @@ export default function GoldCalculator() {
                               </p>
                             </div>
                           </div>
+
+                          {/* INFORMAÇÃO OURO BRANCO */}
+
+                          {isWhiteGold && (
+                            <div
+                              className="
+                                mt-5
+                                rounded-2xl
+                                border
+                                border-white/35
+                                bg-white/15
+                                px-5
+                                py-4
+                              "
+                            >
+                              <p
+                                className="
+                                  text-[8px]
+                                  font-semibold
+                                  uppercase
+                                  tracking-[0.16em]
+                                  text-[#654924]
+                                "
+                              >
+                                Ouro branco
+                              </p>
+
+                              <p
+                                className="
+                                  mt-2
+                                  text-[10px]
+                                  leading-5
+                                  text-[#584222]
+                                "
+                              >
+                                Valor comercial
+                                calculado com
+                                ajuste de 50%
+                                sobre a
+                                cotação-base
+                                comercial do{' '}
+                                {selectedKarat
+                                  ?.label.toLowerCase()}.
+                              </p>
+                            </div>
+                          )}
 
                           {/* REFERÊNCIA */}
 
@@ -1083,15 +1667,18 @@ export default function GoldCalculator() {
                               md:text-[11px]
                             "
                           >
-                            Este valor representa uma
-                            estimativa inicial. A
-                            proposta final poderá
-                            variar após avaliação
-                            presencial, considerando
-                            características da peça,
-                            materiais agregados,
-                            processo de refino e
-                            demais aspectos técnicos.
+                            Este valor
+                            representa uma
+                            estimativa inicial.
+                            A proposta final
+                            poderá variar após
+                            avaliação presencial,
+                            considerando
+                            características da
+                            peça, materiais
+                            agregados, processo
+                            de refino e demais
+                            aspectos técnicos.
                           </p>
 
                           {prices?.updatedAt && (
@@ -1105,7 +1692,8 @@ export default function GoldCalculator() {
                                 text-[#674D2A]
                               "
                             >
-                              Cotação consultada em{' '}
+                              Cotação consultada
+                              em{' '}
                               {new Date(
                                 prices.updatedAt
                               ).toLocaleString(
@@ -1113,6 +1701,7 @@ export default function GoldCalculator() {
                                 {
                                   dateStyle:
                                     'short',
+
                                   timeStyle:
                                     'short',
                                 }
@@ -1248,7 +1837,6 @@ export default function GoldCalculator() {
               filter: blur(58px);
             }
 
-
             /* ===============================================
                INDICADORES
             =============================================== */
@@ -1296,7 +1884,6 @@ export default function GoldCalculator() {
                   rgba(255,255,255,.76);
               }
             }
-
 
             /* ===============================================
                PALCO
@@ -1352,7 +1939,6 @@ export default function GoldCalculator() {
 
               opacity: .76;
             }
-
 
             /* ===============================================
                CALCULADORA
@@ -1520,7 +2106,6 @@ export default function GoldCalculator() {
               pointer-events: none;
             }
 
-
             /* ===============================================
                CAMPOS
             =============================================== */
@@ -1583,7 +2168,6 @@ export default function GoldCalculator() {
                 inset 0 1px 0
                 white;
             }
-
 
             /* ===============================================
                BOTÃO
@@ -1719,9 +2303,8 @@ export default function GoldCalculator() {
               opacity: .84;
             }
 
-
             /* ===============================================
-               STATUS ONLINE — VERDE
+               STATUS ONLINE
             =============================================== */
 
             .live-indicator {
@@ -1783,7 +2366,6 @@ export default function GoldCalculator() {
                 opacity: 0;
               }
             }
-
 
             /* ===============================================
                RESULTADO
@@ -1895,7 +2477,6 @@ export default function GoldCalculator() {
               }
             }
 
-
             /* ===============================================
                MOBILE
             =============================================== */
@@ -1924,7 +2505,6 @@ export default function GoldCalculator() {
                 padding: 20px;
               }
             }
-
 
             /* ===============================================
                REDUCED MOTION

@@ -4,6 +4,7 @@ import CaptacaoSection from '../components/CaptacaoSection';
 import VitrineSection from '../components/VitrineSection';
 import GoldCalculator from '../components/GoldCalculator';
 import LeilaoSection from '../components/LeilaoSection';
+import HomeFAQContactSection from '../components/HomeFAQContactSection';
 import FooterSection from '../components/FooterSection';
 
 export default function Home() {
@@ -27,7 +28,10 @@ export default function Home() {
       {/* 5. Leilão Ao Vivo */}
       <LeilaoSection />
 
-      {/* 6. Concierge, FAQ, Mapa e Rodapé */}
+      {/* 6. Concierge, FAQ e Localização */}
+      <HomeFAQContactSection />
+
+      {/* 7. Rodapé global */}
       <FooterSection />
     </main>
   );
