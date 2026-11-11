@@ -7,41 +7,170 @@ function TweezersIcon() {
       aria-hidden="true"
       className="h-full w-full"
     >
+      {/* BASE ÚNICA */}
       <path
-        d="M42 28C56 70 68 102 83 132"
+        d="
+          M35 142
+          L54 124
+        "
         stroke="currentColor"
         strokeWidth="5"
         strokeLinecap="round"
       />
 
+      {/* BRAÇO SUPERIOR */}
       <path
-        d="M138 28C124 70 112 102 97 132"
+        d="
+          M52 126
+          C65 113 76 101 87 89
+          C101 74 116 58 145 31
+        "
         stroke="currentColor"
-        strokeWidth="5"
+        strokeWidth="4"
+        strokeLinecap="round"
+      />
+
+      {/* BRAÇO INFERIOR */}
+      <path
+        d="
+          M52 126
+          C67 119 81 112 94 104
+          C112 93 129 81 153 60
+        "
+        stroke="currentColor"
+        strokeWidth="4"
+        strokeLinecap="round"
+      />
+
+      {/* TRANSIÇÃO DA BASE */}
+      <path
+        d="
+          M42 136
+          C49 130 54 126 60 122
+        "
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+        opacity="0.55"
+      />
+
+      {/* ÁREA DE PEGADA SUPERIOR */}
+      <path
+        d="
+          M69 109
+          C76 101 83 94 90 86
+        "
+        stroke="currentColor"
+        strokeWidth="7"
+        strokeLinecap="round"
+        opacity="0.18"
+      />
+
+      {/* ÁREA DE PEGADA INFERIOR */}
+      <path
+        d="
+          M72 116
+          C80 111 88 106 96 101
+        "
+        stroke="currentColor"
+        strokeWidth="7"
+        strokeLinecap="round"
+        opacity="0.18"
+      />
+
+      {/* RANHURAS SUPERIORES */}
+      <g
+        stroke="currentColor"
+        strokeWidth="1"
+        strokeLinecap="round"
+        opacity="0.55"
+      >
+        <path d="M70 106L75 111" />
+        <path d="M75 101L80 106" />
+        <path d="M80 96L85 101" />
+        <path d="M85 91L90 96" />
+      </g>
+
+      {/* RANHURAS INFERIORES */}
+      <g
+        stroke="currentColor"
+        strokeWidth="1"
+        strokeLinecap="round"
+        opacity="0.55"
+      >
+        <path d="M73 113L77 118" />
+        <path d="M79 109L83 114" />
+        <path d="M85 105L89 110" />
+        <path d="M91 101L95 106" />
+      </g>
+
+      {/* PONTAS MAIS FINAS */}
+      <path
+        d="M118 57L145 31"
+        stroke="currentColor"
+        strokeWidth="2.2"
         strokeLinecap="round"
       />
 
       <path
-        d="M83 132L77 145"
+        d="M127 82L153 60"
         stroke="currentColor"
-        strokeWidth="3"
+        strokeWidth="2.2"
         strokeLinecap="round"
       />
 
-      <path
-        d="M97 132L103 145"
-        stroke="currentColor"
-        strokeWidth="3"
-        strokeLinecap="round"
-      />
-
+      {/* PEQUENO DIAMANTE */}
       <circle
-        cx="90"
-        cy="151"
-        r="16"
+        cx="147"
+        cy="47"
+        r="10"
         stroke="currentColor"
-        strokeWidth="1.5"
-        opacity="0.6"
+        strokeWidth="1.3"
+      />
+
+      <path
+        d="
+          M147 37
+          L154 40
+          L157 47
+          L154 54
+          L147 57
+          L140 54
+          L137 47
+          L140 40
+          Z
+        "
+        stroke="currentColor"
+        strokeWidth="0.8"
+        opacity="0.68"
+      />
+
+      <path
+        d="M147 37V57"
+        stroke="currentColor"
+        strokeWidth="0.6"
+        opacity="0.42"
+      />
+
+      <path
+        d="M137 47H157"
+        stroke="currentColor"
+        strokeWidth="0.6"
+        opacity="0.42"
+      />
+
+      <path
+        d="M140 40L154 54"
+        stroke="currentColor"
+        strokeWidth="0.6"
+        opacity="0.4"
+      />
+
+      <path
+        d="M154 40L140 54"
+        stroke="currentColor"
+        strokeWidth="0.6"
+        opacity="0.4"
       />
     </svg>
   );
@@ -587,7 +716,7 @@ export default function AvaliacaoDiamantesInstrumentosSection() {
           ))}
         </div>
 
-        {/* COMO SE COMPLEMENTAM */}
+        {/* BLOCO INFERIOR */}
         <div
           className="
             mt-10
@@ -689,7 +818,7 @@ export default function AvaliacaoDiamantesInstrumentosSection() {
             </div>
           </div>
 
-          {/* FLUXO DOS INSTRUMENTOS */}
+          {/* FLUXO */}
           <div
             className="
               rounded-[2.2rem]
@@ -827,7 +956,8 @@ export default function AvaliacaoDiamantesInstrumentosSection() {
                 md:text-[2.7rem]
               "
             >
-              O resultado da avaliação nasce da sequência completa de observação e interpretação.
+              O resultado da avaliação nasce da sequência completa de
+              observação e interpretação.
             </h3>
           </div>
 
