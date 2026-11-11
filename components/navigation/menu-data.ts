@@ -19,11 +19,31 @@ export const menuSections: MenuSection[] = [
     href: '/leilao/',
     live: false,
     items: [
-      { label: 'Ver tudo em Leilão', href: '/leilao/', live: false },
-      { label: 'Leilão de Joias', href: '/leilao/joias/', live: false },
-      { label: 'Leilão de Ouro', href: '/leilao/ouro/', live: false },
-      { label: 'Leilão de Relógios', href: '/leilao/relogios/', live: false },
-      { label: 'Leilão de Diamantes', href: '/leilao/diamantes/', live: false },
+      {
+        label: 'Ver tudo em Leilão',
+        href: '/leilao/',
+        live: false,
+      },
+      {
+        label: 'Leilão de Joias',
+        href: '/leilao/joias/',
+        live: false,
+      },
+      {
+        label: 'Leilão de Ouro',
+        href: '/leilao/ouro/',
+        live: false,
+      },
+      {
+        label: 'Leilão de Relógios',
+        href: '/leilao/relogios/',
+        live: false,
+      },
+      {
+        label: 'Leilão de Diamantes',
+        href: '/leilao/diamantes/',
+        live: false,
+      },
       {
         label: 'Como Funciona o Leilão',
         href: '/leilao/como-funciona/',
@@ -38,7 +58,11 @@ export const menuSections: MenuSection[] = [
     href: '/ouro/',
     live: false,
     items: [
-      { label: 'Ver tudo em Ouro', href: '/ouro/', live: false },
+      {
+        label: 'Ver tudo em Ouro',
+        href: '/ouro/',
+        live: false,
+      },
 
       {
         label: 'Compra de Ouro',
@@ -96,18 +120,22 @@ export const menuSections: MenuSection[] = [
     href: '/joias/',
     live: false,
     items: [
-      { label: 'Ver tudo em Joias', href: '/joias/', live: false },
+      {
+        label: 'Ver tudo em Joias',
+        href: '/joias/',
+        live: false,
+      },
 
       {
         label: 'Compra de Joias',
         href: '/joias/compra-de-joias/',
-        live: false,
+        live: true,
       },
 
       {
         label: 'Avaliação de Joias',
         href: '/joias/avaliacao-de-joias/',
-        live: false,
+        live: true,
       },
 
       {
@@ -117,15 +145,21 @@ export const menuSections: MenuSection[] = [
       },
 
       {
-        label: 'Joias Antigas',
-        href: '/joias/joias-antigas/',
-        live: false,
+        label: 'Compra de Joias Antigas',
+        href: '/joias/compra-de-joias-antigas/',
+        live: true,
       },
 
       {
-        label: 'Diamantes',
-        href: '/joias/diamantes/',
-        live: false,
+        label: 'Compra de Diamantes e Brilhantes',
+        href: '/joias/compra-de-diamantes-e-brilhantes/',
+        live: true,
+      },
+
+      {
+        label: 'Avaliação de Diamantes Lapidados',
+        href: '/joias/avaliacao-de-diamantes-lapidados/',
+        live: true,
       },
 
       {
@@ -147,41 +181,49 @@ export const menuSections: MenuSection[] = [
         href: '/joalheria/',
         live: false,
       },
+
       {
         label: 'Coleções',
         href: '/joalheria/colecoes/',
         live: false,
       },
+
       {
         label: 'Anéis',
         href: '/joalheria/aneis/',
         live: false,
       },
+
       {
         label: 'Alianças',
         href: '/joalheria/aliancas/',
         live: false,
       },
+
       {
         label: 'Colares',
         href: '/joalheria/colares/',
         live: false,
       },
+
       {
         label: 'Pulseiras',
         href: '/joalheria/pulseiras/',
         live: false,
       },
+
       {
         label: 'Brincos',
         href: '/joalheria/brincos/',
         live: false,
       },
+
       {
         label: 'Alta Joalheria',
         href: '/joalheria/alta-joalheria/',
         live: false,
       },
+
       {
         label: 'Sob Medida',
         href: '/joalheria/sob-medida/',
@@ -201,36 +243,43 @@ export const menuSections: MenuSection[] = [
         href: '/avaliacao/',
         live: false,
       },
+
       {
         label: 'Avaliação de Joias',
         href: '/avaliacao/joias/',
         live: false,
       },
+
       {
         label: 'Avaliação de Ouro',
         href: '/avaliacao/ouro/',
         live: false,
       },
+
       {
         label: 'Avaliação de Diamantes',
         href: '/avaliacao/diamantes/',
         live: false,
       },
+
       {
         label: 'Avaliação de Relógios',
         href: '/avaliacao/relogios/',
         live: false,
       },
+
       {
         label: 'Avaliação Online',
         href: '/avaliacao/online/',
         live: false,
       },
+
       {
         label: 'Avaliação em Domicílio',
         href: '/avaliacao/em-domicilio/',
         live: false,
       },
+
       {
         label: 'Avaliação com Hora Marcada',
         href: '/avaliacao/hora-marcada/',
@@ -250,21 +299,25 @@ export const menuSections: MenuSection[] = [
         href: '/relogios/',
         live: false,
       },
+
       {
         label: 'Compra de Relógios',
         href: '/relogios/compra-de-relogios/',
         live: false,
       },
+
       {
         label: 'Avaliação de Relógios',
         href: '/relogios/avaliacao-de-relogios/',
         live: false,
       },
+
       {
         label: 'Relógios de Luxo',
         href: '/relogios/relogios-de-luxo/',
         live: false,
       },
+
       {
         label: 'Relógios para Leilão',
         href: '/relogios/relogios-para-leilao/',
@@ -284,26 +337,31 @@ export const menuSections: MenuSection[] = [
         href: '/servicos/',
         live: false,
       },
+
       {
         label: 'Avaliação Online',
         href: '/servicos/avaliacao-online/',
         live: false,
       },
+
       {
         label: 'Atendimento com Hora Marcada',
         href: '/servicos/hora-marcada/',
         live: false,
       },
+
       {
         label: 'Avaliação em Domicílio',
         href: '/servicos/avaliacao-em-domicilio/',
         live: false,
       },
+
       {
         label: 'Atendimento no Vogue Square',
         href: '/servicos/vogue-square/',
         live: false,
       },
+
       {
         label: 'Segurança e Privacidade',
         href: '/servicos/seguranca-e-privacidade/',
@@ -323,21 +381,25 @@ export const menuSections: MenuSection[] = [
         href: '/localizacao/',
         live: false,
       },
+
       {
         label: 'Barra da Tijuca',
         href: '/localizacao/barra-da-tijuca/',
         live: false,
       },
+
       {
         label: 'Vogue Square',
         href: '/localizacao/vogue-square/',
         live: false,
       },
+
       {
         label: 'Rio de Janeiro',
         href: '/localizacao/rio-de-janeiro/',
         live: false,
       },
+
       {
         label: 'Loja de Ouro Perto de Mim',
         href: '/ouro/loja-de-ouro-perto-de-mim/',
@@ -357,26 +419,31 @@ export const menuSections: MenuSection[] = [
         href: '/madiha-maison/sobre/',
         live: false,
       },
+
       {
         label: 'Nossa Expertise',
         href: '/madiha-maison/expertise/',
         live: false,
       },
+
       {
         label: 'Joalheria Madiha',
         href: '/joalheria/',
         live: false,
       },
+
       {
         label: 'Segurança e Privacidade',
         href: '/madiha-maison/seguranca-e-privacidade/',
         live: false,
       },
+
       {
         label: 'Vogue Square',
         href: '/localizacao/vogue-square/',
         live: false,
       },
+
       {
         label: 'Contato',
         href: '/madiha-maison/contato/',
@@ -396,31 +463,37 @@ export const menuSections: MenuSection[] = [
         href: '/news/',
         live: false,
       },
+
       {
         label: 'Ouro',
         href: '/news/ouro/',
         live: false,
       },
+
       {
         label: 'Joias',
         href: '/news/joias/',
         live: false,
       },
+
       {
         label: 'Joalheria',
         href: '/news/joalheria/',
         live: false,
       },
+
       {
         label: 'Relógios',
         href: '/news/relogios/',
         live: false,
       },
+
       {
         label: 'Leilões',
         href: '/news/leiloes/',
         live: false,
       },
+
       {
         label: 'Mercado',
         href: '/news/mercado/',
@@ -436,11 +509,13 @@ export const footerMenuItems: MenuItem[] = [
     href: '/madiha-maison/contato/',
     live: false,
   },
+
   {
     label: 'Vogue Square',
     href: '/localizacao/vogue-square/',
     live: false,
   },
+
   {
     label: 'Segurança e Privacidade',
     href: '/madiha-maison/seguranca-e-privacidade/',
