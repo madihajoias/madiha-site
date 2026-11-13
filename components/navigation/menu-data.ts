@@ -341,25 +341,25 @@ export const menuSections: MenuSection[] = [
       {
         label: 'Avaliação Online',
         href: '/servicos/avaliacao-online/',
-        live: false,
+        live: true,
       },
 
       {
         label: 'Atendimento com Hora Marcada',
-        href: '/servicos/hora-marcada/',
-        live: false,
+        href: '/servicos/atendimento-com-hora-marcada/',
+        live: true,
       },
 
       {
         label: 'Avaliação em Domicílio',
         href: '/servicos/avaliacao-em-domicilio/',
-        live: false,
+        live: true,
       },
 
       {
         label: 'Atendimento no Vogue Square',
-        href: '/servicos/vogue-square/',
-        live: false,
+        href: '/servicos/atendimento-no-vogue-square/',
+        live: true,
       },
 
       {
