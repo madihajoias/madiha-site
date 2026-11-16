@@ -1,6 +1,265 @@
 @import "tailwindcss";
 
-/* Fundo padrão do site em Off-white para evitar flashes brancos */
+/* =========================================================
+   MADIHA MAISON — SISTEMA GLOBAL
+   ========================================================= */
+
+:root {
+  --madiha-burgundy: #5A1017;
+  --madiha-champagne: #F7F3EF;
+  --madiha-gold: #C7A87A;
+  --madiha-graphite: #332A2B;
+
+  --font-madiha-title: var(--font-madiha-display);
+}
+
+/* =========================================================
+   BASE
+   ========================================================= */
+
+html {
+  background-color: #F7F3EF;
+}
+
 body {
-  background-color: #F7F3EF; 
+  background-color: #F7F3EF;
+}
+
+/* =========================================================
+   H1 — TÍTULO PRINCIPAL DAS PÁGINAS
+   Redução adicional de aproximadamente 15%
+   ========================================================= */
+
+h1,
+h1[class] {
+  font-family:
+    var(--font-madiha-title),
+    "Bodoni Moda",
+    Didot,
+    "Times New Roman",
+    serif;
+
+  font-size: 1.87rem;
+  font-weight: 400;
+
+  line-height: 1.03;
+  letter-spacing: -0.012em;
+
+  text-wrap: balance;
+}
+
+/* =========================================================
+   H2 — TÍTULOS PRINCIPAIS DE SEÇÕES
+   ========================================================= */
+
+h2,
+h2[class] {
+  font-family:
+    var(--font-madiha-title),
+    "Bodoni Moda",
+    Didot,
+    "Times New Roman",
+    serif;
+
+  font-size: 1.91rem;
+  font-weight: 400;
+
+  line-height: 1.05;
+  letter-spacing: -0.012em;
+
+  text-wrap: balance;
+}
+
+/* =========================================================
+   H3 — TÍTULOS DE CARDS E BLOCOS MENORES
+   ========================================================= */
+
+h3,
+h3[class] {
+  font-family:
+    var(--font-madiha-title),
+    "Bodoni Moda",
+    Didot,
+    "Times New Roman",
+    serif;
+
+  font-size: 1.62rem;
+  font-weight: 400;
+
+  line-height: 1.07;
+  letter-spacing: -0.008em;
+
+  text-wrap: balance;
+}
+
+/* =========================================================
+   640PX+
+   ========================================================= */
+
+@media (min-width: 640px) {
+  h1,
+  h1[class] {
+    font-size: 2.17rem;
+  }
+
+  h2,
+  h2[class] {
+    font-size: 2.17rem;
+  }
+
+  h3,
+  h3[class] {
+    font-size: 1.74rem;
+  }
+}
+
+/* =========================================================
+   768PX+
+   ========================================================= */
+
+@media (min-width: 768px) {
+  h1,
+  h1[class] {
+    font-size: 2.59rem;
+    line-height: 1.01;
+  }
+
+  h2,
+  h2[class] {
+    font-size: 2.55rem;
+    line-height: 1.03;
+  }
+
+  h3,
+  h3[class] {
+    font-size: 1.96rem;
+    line-height: 1.05;
+  }
+}
+
+/* =========================================================
+   1024PX+
+   ========================================================= */
+
+@media (min-width: 1024px) {
+  h1,
+  h1[class] {
+    font-size: 3.06rem;
+  }
+
+  h2,
+  h2[class] {
+    font-size: 2.89rem;
+  }
+
+  h3,
+  h3[class] {
+    font-size: 2.17rem;
+  }
+}
+
+/* =========================================================
+   CLASSE OPCIONAL — HERO
+   ========================================================= */
+
+.madiha-title-hero {
+  font-family:
+    var(--font-madiha-title),
+    "Bodoni Moda",
+    Didot,
+    "Times New Roman",
+    serif;
+
+  font-size: 1.87rem;
+  font-weight: 400;
+  line-height: 1.03;
+  letter-spacing: -0.012em;
+  text-wrap: balance;
+}
+
+/* =========================================================
+   CLASSE OPCIONAL — SEÇÃO
+   ========================================================= */
+
+.madiha-title-section {
+  font-family:
+    var(--font-madiha-title),
+    "Bodoni Moda",
+    Didot,
+    "Times New Roman",
+    serif;
+
+  font-size: 1.91rem;
+  font-weight: 400;
+  line-height: 1.05;
+  letter-spacing: -0.012em;
+  text-wrap: balance;
+}
+
+/* =========================================================
+   CLASSE OPCIONAL — CARD
+   ========================================================= */
+
+.madiha-title-card {
+  font-family:
+    var(--font-madiha-title),
+    "Bodoni Moda",
+    Didot,
+    "Times New Roman",
+    serif;
+
+  font-size: 1.62rem;
+  font-weight: 400;
+  line-height: 1.07;
+  letter-spacing: -0.008em;
+  text-wrap: balance;
+}
+
+/* =========================================================
+   RESPONSIVIDADE DAS CLASSES OPCIONAIS
+   ========================================================= */
+
+@media (min-width: 640px) {
+  .madiha-title-hero {
+    font-size: 2.17rem;
+  }
+
+  .madiha-title-section {
+    font-size: 2.17rem;
+  }
+
+  .madiha-title-card {
+    font-size: 1.74rem;
+  }
+}
+
+@media (min-width: 768px) {
+  .madiha-title-hero {
+    font-size: 2.59rem;
+    line-height: 1.01;
+  }
+
+  .madiha-title-section {
+    font-size: 2.55rem;
+    line-height: 1.03;
+  }
+
+  .madiha-title-card {
+    font-size: 1.96rem;
+    line-height: 1.05;
+  }
+}
+
+@media (min-width: 1024px) {
+  .madiha-title-hero {
+    font-size: 3.06rem;
+  }
+
+  .madiha-title-section {
+    font-size: 2.89rem;
+  }
+
+  .madiha-title-card {
+    font-size: 2.17rem;
+  }
 }

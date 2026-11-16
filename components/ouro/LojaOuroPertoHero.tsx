@@ -94,26 +94,17 @@ export default function LojaOuroPertoHero() {
             Madiha Maison • Barra da Tijuca
           </p>
 
-          <h1
+           <h1
             id="loja-ouro-perto-title"
             className="
-              mt-6
-              max-w-[850px]
-              font-serif
-              text-[3.3rem]
-              font-normal
-              leading-[0.98]
-              tracking-[-0.035em]
-              text-[#765525]
-              sm:text-[4.1rem]
-              md:text-[4.9rem]
-              lg:text-[5.6rem]
-            "
-          >
-            Loja de Ouro
-            <br />
-            Perto de Mim
-          </h1>
+            mt-6
+            max-w-[850px]
+            font-serif
+             text-[#765525]
+             "
+            >
+             Loja de Ouro Perto de Mim
+           </h1> 
 
           <p
             className="

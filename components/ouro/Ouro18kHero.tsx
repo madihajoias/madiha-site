@@ -88,26 +88,17 @@ export default function Ouro18kHero() {
             Madiha Maison • Ouro 18k
           </p>
 
-          <h1
-            id="ouro-18k-title"
-            className="
-              mt-6
-              max-w-[780px]
-              font-serif
-              text-[3.4rem]
-              font-normal
-              leading-[0.98]
-              tracking-[-0.035em]
-              text-[#765525]
-              sm:text-[4.2rem]
-              md:text-[5rem]
-              lg:text-[5.7rem]
-            "
-          >
-            Ouro
-            <br />
-            18k
-          </h1>
+           <h1
+           id="ouro-18k-title"
+           className="
+           mt-6
+           max-w-[780px]
+           font-serif
+           text-[#765525]
+           "
+           >
+           Ouro 18k
+           </h1>
 
           <p
             className="

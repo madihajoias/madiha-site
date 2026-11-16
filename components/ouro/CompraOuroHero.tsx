@@ -94,6 +94,7 @@ export default function CompraOuroHero() {
           max-w-[90rem]
           items-center
           gap-14
+          overflow-hidden
           px-6
           pb-24
           pt-40
@@ -102,10 +103,11 @@ export default function CompraOuroHero() {
           md:pt-32
           lg:grid-cols-[0.9fr_1.1fr]
           lg:gap-20
+          lg:overflow-visible
         "
       >
         {/* ESQUERDA */}
-        <div className="max-w-[650px]">
+        <div className="w-full min-w-0 max-w-[650px]">
           <p
             className="
               mb-6
@@ -124,15 +126,7 @@ export default function CompraOuroHero() {
             id="compra-ouro-title"
             className="
               max-w-[650px]
-              font-serif
-              text-[3.1rem]
-              font-normal
-              leading-[0.98]
-              tracking-[-0.025em]
               text-[#765525]
-              sm:text-[4rem]
-              md:text-[5rem]
-              lg:text-[5.7rem]
             "
           >
             Compra
@@ -151,9 +145,8 @@ export default function CompraOuroHero() {
               md:text-[16px]
             "
           >
-            Venda seu ouro com avaliação técnica,
-            segurança, discrição e atendimento
-            especializado no Vogue Square, na Barra da Tijuca.
+            Venda seu ouro com avaliação técnica, segurança, discrição e
+            atendimento especializado no Vogue Square, na Barra da Tijuca.
           </p>
 
           <p
@@ -166,9 +159,9 @@ export default function CompraOuroHero() {
               text-[#8A775B]
             "
           >
-            Analisamos peso, teor e características da peça
-            para apresentar uma proposta comercial clara,
-            com pagamento após a aprovação da avaliação.
+            Analisamos peso, teor e características da peça para apresentar uma
+            proposta comercial clara, com pagamento após a aprovação da
+            avaliação.
           </p>
 
           <div
@@ -244,6 +237,7 @@ export default function CompraOuroHero() {
             className="
               mt-14
               grid
+              w-full
               max-w-[610px]
               grid-cols-1
               gap-3
@@ -258,6 +252,8 @@ export default function CompraOuroHero() {
               <div
                 key={label}
                 className="
+                  w-full
+                  min-w-0
                   rounded-[1.25rem]
                   border
                   border-white/65
@@ -300,37 +296,52 @@ export default function CompraOuroHero() {
           className="
             relative
             flex
-            min-h-[520px]
+            min-h-[470px]
+            w-full
+            min-w-0
             items-center
             justify-center
+            sm:min-h-[560px]
             lg:min-h-[720px]
           "
         >
+          {/* HALO */}
           <div
+            aria-hidden="true"
             className="
               absolute
-              h-[520px]
-              w-[520px]
+              left-1/2
+              top-1/2
+              h-[360px]
+              w-[360px]
+              -translate-x-1/2
+              -translate-y-1/2
               rounded-full
               bg-[radial-gradient(circle,rgba(255,249,233,0.62)_0%,rgba(235,215,180,0.31)_37%,rgba(183,145,85,0.13)_62%,transparent_78%)]
               blur-[58px]
+              sm:h-[520px]
+              sm:w-[520px]
             "
           />
 
+          {/* CARD 24K */}
           <div
             className="
               relative
-              h-[380px]
-              w-[380px]
+              aspect-square
+              w-full
+              max-w-[345px]
               overflow-hidden
-              rounded-[54px_54px_90px_54px]
+              rounded-[46px_46px_72px_46px]
               border
               border-[#FFF8E8]/75
               bg-[linear-gradient(145deg,rgba(199,165,108,0.96)_0%,rgba(177,136,72,0.95)_38%,rgba(154,110,49,0.94)_70%,rgba(188,148,84,0.94)_100%)]
-              shadow-[0_48px_112px_rgba(77,49,12,0.34),0_17px_46px_rgba(110,72,19,0.23),inset_0_1px_0_rgba(255,255,255,0.48)]
+              shadow-[0_38px_82px_rgba(77,49,12,0.28),0_14px_38px_rgba(110,72,19,0.18),inset_0_1px_0_rgba(255,255,255,0.48)]
               backdrop-blur-3xl
               sm:h-[500px]
               sm:w-[500px]
+              sm:max-w-none
+              sm:rounded-[54px_54px_90px_54px]
             "
           >
             <div
@@ -339,11 +350,13 @@ export default function CompraOuroHero() {
                 absolute
                 -right-[28%]
                 -top-[26%]
-                h-[370px]
-                w-[370px]
+                h-[300px]
+                w-[300px]
                 rounded-full
                 bg-[#FFEDC7]/45
                 blur-[78px]
+                sm:h-[370px]
+                sm:w-[370px]
               "
             />
 
@@ -353,7 +366,7 @@ export default function CompraOuroHero() {
                 absolute
                 -left-[20%]
                 -top-[12%]
-                h-[180px]
+                h-[150px]
                 w-[90%]
                 -rotate-12
                 rounded-full
@@ -362,6 +375,7 @@ export default function CompraOuroHero() {
                 via-white/25
                 to-transparent
                 blur-xl
+                sm:h-[180px]
               "
             />
 
@@ -374,8 +388,9 @@ export default function CompraOuroHero() {
                 flex-col
                 items-center
                 justify-center
-                px-10
+                px-8
                 text-center
+                sm:px-10
               "
             >
               <p
@@ -392,12 +407,13 @@ export default function CompraOuroHero() {
 
               <p
                 className="
-                  mt-6
+                  mt-5
                   font-serif
-                  text-[4.8rem]
+                  text-[4.2rem]
                   leading-none
                   tracking-[-0.045em]
                   text-[#412907]
+                  sm:mt-6
                   sm:text-[6.4rem]
                 "
               >
@@ -406,10 +422,12 @@ export default function CompraOuroHero() {
 
               <div
                 className="
-                  my-7
+                  my-6
                   h-px
-                  w-20
+                  w-16
                   bg-[#52350F]/28
+                  sm:my-7
+                  sm:w-20
                 "
               />
 
@@ -431,20 +449,25 @@ export default function CompraOuroHero() {
             </div>
           </div>
 
+          {/* CARD FLUTUANTE */}
           <div
             className="
               absolute
-              bottom-[6%]
-              right-[1%]
-              max-w-[240px]
-              rounded-[1.35rem]
+              bottom-[4%]
+              right-0
+              w-[185px]
+              rounded-[1.25rem]
               border
               border-white/60
-              bg-[#F5E8D1]/65
-              p-6
-              shadow-[0_22px_60px_rgba(86,57,19,0.10)]
+              bg-[#F5E8D1]/72
+              p-5
+              shadow-[0_18px_46px_rgba(86,57,19,0.10)]
               backdrop-blur-2xl
+              sm:bottom-[6%]
               sm:right-[4%]
+              sm:w-auto
+              sm:max-w-[240px]
+              sm:p-6
             "
           >
             <p
@@ -463,9 +486,10 @@ export default function CompraOuroHero() {
               className="
                 mt-3
                 font-serif
-                text-[20px]
+                text-[17px]
                 leading-snug
                 text-[#68491F]
+                sm:text-[20px]
               "
             >
               Atendimento discreto e especializado.

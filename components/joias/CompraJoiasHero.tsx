@@ -93,17 +93,10 @@ export default function CompraJoiasHero() {
           <h1
             id="compra-joias-title"
             className="
+              madiha-title-hero
               mt-6
               max-w-[650px]
-              font-serif
-              text-[3.4rem]
-              font-normal
-              leading-[0.9]
-              tracking-[-0.05em]
               text-[#F7F3EF]
-              sm:text-[4.2rem]
-              md:text-[5rem]
-              lg:text-[5.6rem]
             "
           >
             Compra de Joias
@@ -341,16 +334,10 @@ export default function CompraJoiasHero() {
 
                 <h2
                   className="
+                    madiha-title-card
                     mt-6
                     max-w-[500px]
-                    font-serif
-                    text-[2.65rem]
-                    font-normal
-                    leading-[0.92]
-                    tracking-[-0.045em]
                     text-[#F7F3EF]
-                    md:text-[3.35rem]
-                    lg:text-[3.65rem]
                   "
                 >
                   Sua joia pode valer mais do que o ouro que ela contém.

@@ -86,28 +86,19 @@ export default function CalculadoraOuroHero() {
             "
           >
             Madiha Maison • Calculadora de Ouro
-          </p>
+             </p>
 
-          <h1
-            id="calculadora-ouro-title"
-            className="
-              mt-6
-              max-w-[780px]
-              font-serif
-              text-[3.4rem]
-              font-normal
-              leading-[0.98]
-              tracking-[-0.035em]
-              text-[#765525]
-              sm:text-[4.2rem]
-              md:text-[5rem]
-              lg:text-[5.7rem]
-            "
-          >
-            Calculadora
-            <br />
-            de Ouro
-          </h1>
+           <h1
+               id="calculadora-ouro-title"
+                className="
+                mt-6
+                max-w-[780px]
+                font-serif
+                text-[#765525]
+             "
+             >
+            Calculadora de Ouro
+             </h1>
 
           <p
             className="

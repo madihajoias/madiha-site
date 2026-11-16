@@ -94,19 +94,10 @@ export default function Ouro24kHero() {
               mt-6
               max-w-[780px]
               font-serif
-              text-[3.4rem]
-              font-normal
-              leading-[0.98]
-              tracking-[-0.035em]
               text-[#765525]
-              sm:text-[4.2rem]
-              md:text-[5rem]
-              lg:text-[5.7rem]
             "
           >
-            Ouro
-            <br />
-            24k
+            Ouro 24k
           </h1>
 
           <p

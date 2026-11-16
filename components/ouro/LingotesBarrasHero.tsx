@@ -94,21 +94,10 @@ export default function LingotesBarrasHero() {
               mt-6
               max-w-[820px]
               font-serif
-              text-[3.3rem]
-              font-normal
-              leading-[0.98]
-              tracking-[-0.035em]
               text-[#765525]
-              sm:text-[4.1rem]
-              md:text-[4.9rem]
-              lg:text-[5.6rem]
             "
           >
-            Compra de
-            <br />
-            Lingotes e Barras
-            <br />
-            de Ouro
+            Compra de Lingotes e Barras de Ouro
           </h1>
 
           <p
