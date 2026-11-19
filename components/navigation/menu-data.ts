@@ -303,25 +303,25 @@ export const menuSections: MenuSection[] = [
       {
         label: 'Compra de Relógios',
         href: '/relogios/compra-de-relogios/',
-        live: false,
+        live: true,
       },
 
       {
         label: 'Avaliação de Relógios',
         href: '/relogios/avaliacao-de-relogios/',
-        live: false,
+        live: true,
       },
 
       {
         label: 'Relógios de Luxo',
         href: '/relogios/relogios-de-luxo/',
-        live: false,
+        live: true,
       },
 
       {
         label: 'Relógios para Leilão',
         href: '/relogios/relogios-para-leilao/',
-        live: false,
+        live: true,
       },
     ],
   },
@@ -341,25 +341,25 @@ export const menuSections: MenuSection[] = [
       {
         label: 'Avaliação Online',
         href: '/servicos/avaliacao-online/',
-        live: true,
+        live: false,
       },
 
       {
         label: 'Atendimento com Hora Marcada',
-        href: '/servicos/atendimento-com-hora-marcada/',
-        live: true,
+        href: '/servicos/hora-marcada/',
+        live: false,
       },
 
       {
         label: 'Avaliação em Domicílio',
         href: '/servicos/avaliacao-em-domicilio/',
-        live: true,
+        live: false,
       },
 
       {
         label: 'Atendimento no Vogue Square',
-        href: '/servicos/atendimento-no-vogue-square/',
-        live: true,
+        href: '/servicos/vogue-square/',
+        live: false,
       },
 
       {
@@ -383,21 +383,21 @@ export const menuSections: MenuSection[] = [
       },
 
       {
+        label: 'Rio de Janeiro',
+        href: '/localizacao/rio-de-janeiro/',
+        live: true,
+      },
+
+      {
         label: 'Barra da Tijuca',
         href: '/localizacao/barra-da-tijuca/',
-        live: false,
+        live: true,
       },
 
       {
         label: 'Vogue Square',
         href: '/localizacao/vogue-square/',
-        live: false,
-      },
-
-      {
-        label: 'Rio de Janeiro',
-        href: '/localizacao/rio-de-janeiro/',
-        live: false,
+        live: true,
       },
 
       {
@@ -441,7 +441,7 @@ export const menuSections: MenuSection[] = [
       {
         label: 'Vogue Square',
         href: '/localizacao/vogue-square/',
-        live: false,
+        live: true,
       },
 
       {
@@ -513,7 +513,7 @@ export const footerMenuItems: MenuItem[] = [
   {
     label: 'Vogue Square',
     href: '/localizacao/vogue-square/',
-    live: false,
+    live: true,
   },
 
   {

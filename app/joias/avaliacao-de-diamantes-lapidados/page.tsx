@@ -1,6 +1,5 @@
 import type { Metadata } from 'next';
 
-import Header from '../../../components/Header';
 import FooterSection from '../../../components/FooterSection';
 
 import AvaliacaoDiamantesHero from '../../../components/joias/AvaliacaoDiamantesHero';
@@ -49,7 +48,7 @@ export const metadata: Metadata = {
 export default function AvaliacaoDeDiamantesLapidadosPage() {
   return (
     <>
-      {/* FAIXA CLARA SOB O HEADER */}
+      {/* FAIXA CLARA SOB O HEADER GLOBAL */}
       <div
         aria-hidden="true"
         className="
@@ -67,8 +66,6 @@ export default function AvaliacaoDeDiamantesLapidadosPage() {
           md:h-[92px]
         "
       />
-
-      <Header />
 
       <main className="min-h-screen bg-[#F7F3EF]">
         {/* HERO */}

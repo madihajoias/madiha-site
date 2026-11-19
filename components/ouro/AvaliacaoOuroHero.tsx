@@ -88,26 +88,17 @@ export default function AvaliacaoOuroHero() {
             Madiha Maison • Avaliação de Ouro
           </p>
 
-          <h1
+           <h1
             id="avaliacao-ouro-title"
-            className="
-              mt-6
-              max-w-[760px]
-              font-serif
-              text-[3.4rem]
-              font-normal
-              leading-[0.98]
-              tracking-[-0.035em]
-              text-[#765525]
-              sm:text-[4.2rem]
-              md:text-[5rem]
-              lg:text-[5.7rem]
-            "
-          >
-            Avaliação
-            <br />
-            de Ouro
-          </h1>
+             className="
+             mt-6
+             max-w-[760px]
+             font-serif
+             text-[#765525]
+             "
+            >
+             Avaliação de Ouro
+            </h1>
 
           <p
             className="
